@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.client.NettyClient;
 import com.hibob.anyim.client.client.UserClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -64,19 +65,20 @@ public class ClientMain {
         startupCmdMap.put("22", userClient22);
     }
 
-    public static void register(UserClient userClient) throws URISyntaxException {
+    public static void register(UserClient userClient) throws Exception {
         userClient.register();
     }
 
-    public static void login(UserClient userClient) throws URISyntaxException {
-        JSONObject login = userClient.login();
+    public static void login(UserClient userClient) throws Exception {
+        ResponseEntity<String> response = userClient.login();
+        JSONObject login = JSONObject.parseObject(response.getBody());
         token = login.getJSONObject("data").getJSONObject("accessToken").getString("token");
         signKey = login.getJSONObject("data").getJSONObject("accessToken").getString("secret");
     }
 
-    private static void clearUser(UserClient userClient) throws URISyntaxException {
+    private static void clearUser(UserClient userClient) throws Exception {
         userClient.login();
-        userClient.deregister(token, signKey);
+        userClient.deregister();
     }
 
     /**
@@ -84,9 +86,9 @@ public class ClientMain {
      * @param args
      * @throws URISyntaxException
      */
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws Exception {
         UserClient userClient = startupCmdMap.get(args[0]);
-        if (!userClient.isExistAccount()) {
+        if (!userClient.validateAccount()) {
             register(userClient);
         }
         login(userClient);
