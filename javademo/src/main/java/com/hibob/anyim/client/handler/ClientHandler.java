@@ -1,9 +1,9 @@
 package com.hibob.anyim.client.handler;
 
 import com.hibob.anyim.client.consts.Const;
-import com.hibob.anyim.client.protobuf.Header;
-import com.hibob.anyim.client.protobuf.Msg;
-import com.hibob.anyim.client.protobuf.MsgType;
+import com.hibob.anyim.netty.protobuf.Header;
+import com.hibob.anyim.netty.protobuf.Msg;
+import com.hibob.anyim.netty.protobuf.MsgType;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.*;
 import lombok.Data;

@@ -2,7 +2,7 @@
 // source: msg.proto
 
 // Protobuf Java Version: 4.26.1
-package com.hibob.anyim.client.protobuf;
+package com.hibob.anyim.netty.protobuf;
 
 /**
  * Protobuf enum {@code com.hibob.anyim.netty.protobuf.MsgType}
@@ -140,7 +140,7 @@ public enum MsgType
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return com.hibob.anyim.client.protobuf.MsgOuterClass.getDescriptor().getEnumTypes().get(0);
+    return com.hibob.anyim.netty.protobuf.MsgOuterClass.getDescriptor().getEnumTypes().get(0);
   }
 
   private static final MsgType[] VALUES = values();

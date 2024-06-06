@@ -4,10 +4,10 @@ import com.hibob.anyim.client.consts.Const;
 import com.hibob.anyim.client.handler.ByteBufToWebSocketFrame;
 import com.hibob.anyim.client.handler.ClientHandler;
 import com.hibob.anyim.client.handler.WebSocketToByteBufEncoder;
-import com.hibob.anyim.client.protobuf.Body;
-import com.hibob.anyim.client.protobuf.Header;
-import com.hibob.anyim.client.protobuf.Msg;
-import com.hibob.anyim.client.protobuf.MsgType;
+import com.hibob.anyim.netty.protobuf.Body;
+import com.hibob.anyim.netty.protobuf.Header;
+import com.hibob.anyim.netty.protobuf.Msg;
+import com.hibob.anyim.netty.protobuf.MsgType;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -106,7 +106,6 @@ public class NettyClient {
                         .setFromId(userClient.getAccount())
                         .setFromClient(userClient.getClientId())
                         .setToId(toId)
-                        .setMsgId(1)
                         .setSeq(1)
                         .setAck(1)
                         .setContent(content)

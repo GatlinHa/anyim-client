@@ -2,7 +2,7 @@
 // source: msg.proto
 
 // Protobuf Java Version: 4.26.1
-package com.hibob.anyim.client.protobuf;
+package com.hibob.anyim.netty.protobuf;
 
 public interface HeaderOrBuilder extends
     // @@protoc_insertion_point(interface_extends:com.hibob.anyim.netty.protobuf.Header)
@@ -29,7 +29,7 @@ public interface HeaderOrBuilder extends
    * <code>.com.hibob.anyim.netty.protobuf.MsgType msgType = 3;</code>
    * @return The msgType.
    */
-  com.hibob.anyim.client.protobuf.MsgType getMsgType();
+  com.hibob.anyim.netty.protobuf.MsgType getMsgType();
 
   /**
    * <code>bool isExtension = 4;</code>

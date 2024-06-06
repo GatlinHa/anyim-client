@@ -2,7 +2,7 @@
 // source: msg.proto
 
 // Protobuf Java Version: 4.26.1
-package com.hibob.anyim.client.protobuf;
+package com.hibob.anyim.netty.protobuf;
 
 /**
  * Protobuf type {@code com.hibob.anyim.netty.protobuf.Msg}
@@ -30,20 +30,20 @@ private static final long serialVersionUID = 0L;
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.hibob.anyim.client.protobuf.MsgOuterClass.internal_static_com_hibob_anyim_netty_protobuf_Msg_descriptor;
+    return com.hibob.anyim.netty.protobuf.MsgOuterClass.internal_static_com_hibob_anyim_netty_protobuf_Msg_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.hibob.anyim.client.protobuf.MsgOuterClass.internal_static_com_hibob_anyim_netty_protobuf_Msg_fieldAccessorTable
+    return com.hibob.anyim.netty.protobuf.MsgOuterClass.internal_static_com_hibob_anyim_netty_protobuf_Msg_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.hibob.anyim.client.protobuf.Msg.class, com.hibob.anyim.client.protobuf.Msg.Builder.class);
+            com.hibob.anyim.netty.protobuf.Msg.class, com.hibob.anyim.netty.protobuf.Msg.Builder.class);
   }
 
   private int bitField0_;
   public static final int HEADER_FIELD_NUMBER = 1;
-  private com.hibob.anyim.client.protobuf.Header header_;
+  private com.hibob.anyim.netty.protobuf.Header header_;
   /**
    * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
    * @return Whether the header field is set.
@@ -57,19 +57,19 @@ private static final long serialVersionUID = 0L;
    * @return The header.
    */
   @java.lang.Override
-  public com.hibob.anyim.client.protobuf.Header getHeader() {
-    return header_ == null ? com.hibob.anyim.client.protobuf.Header.getDefaultInstance() : header_;
+  public com.hibob.anyim.netty.protobuf.Header getHeader() {
+    return header_ == null ? com.hibob.anyim.netty.protobuf.Header.getDefaultInstance() : header_;
   }
   /**
    * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
    */
   @java.lang.Override
-  public com.hibob.anyim.client.protobuf.HeaderOrBuilder getHeaderOrBuilder() {
-    return header_ == null ? com.hibob.anyim.client.protobuf.Header.getDefaultInstance() : header_;
+  public com.hibob.anyim.netty.protobuf.HeaderOrBuilder getHeaderOrBuilder() {
+    return header_ == null ? com.hibob.anyim.netty.protobuf.Header.getDefaultInstance() : header_;
   }
 
   public static final int BODY_FIELD_NUMBER = 2;
-  private com.hibob.anyim.client.protobuf.Body body_;
+  private com.hibob.anyim.netty.protobuf.Body body_;
   /**
    * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
    * @return Whether the body field is set.
@@ -83,19 +83,19 @@ private static final long serialVersionUID = 0L;
    * @return The body.
    */
   @java.lang.Override
-  public com.hibob.anyim.client.protobuf.Body getBody() {
-    return body_ == null ? com.hibob.anyim.client.protobuf.Body.getDefaultInstance() : body_;
+  public com.hibob.anyim.netty.protobuf.Body getBody() {
+    return body_ == null ? com.hibob.anyim.netty.protobuf.Body.getDefaultInstance() : body_;
   }
   /**
    * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
    */
   @java.lang.Override
-  public com.hibob.anyim.client.protobuf.BodyOrBuilder getBodyOrBuilder() {
-    return body_ == null ? com.hibob.anyim.client.protobuf.Body.getDefaultInstance() : body_;
+  public com.hibob.anyim.netty.protobuf.BodyOrBuilder getBodyOrBuilder() {
+    return body_ == null ? com.hibob.anyim.netty.protobuf.Body.getDefaultInstance() : body_;
   }
 
   public static final int EXTENSION_FIELD_NUMBER = 99;
-  private com.hibob.anyim.client.protobuf.Extension extension_;
+  private com.hibob.anyim.netty.protobuf.Extension extension_;
   /**
    * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
    * @return Whether the extension field is set.
@@ -109,15 +109,15 @@ private static final long serialVersionUID = 0L;
    * @return The extension.
    */
   @java.lang.Override
-  public com.hibob.anyim.client.protobuf.Extension getExtension() {
-    return extension_ == null ? com.hibob.anyim.client.protobuf.Extension.getDefaultInstance() : extension_;
+  public com.hibob.anyim.netty.protobuf.Extension getExtension() {
+    return extension_ == null ? com.hibob.anyim.netty.protobuf.Extension.getDefaultInstance() : extension_;
   }
   /**
    * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
    */
   @java.lang.Override
-  public com.hibob.anyim.client.protobuf.ExtensionOrBuilder getExtensionOrBuilder() {
-    return extension_ == null ? com.hibob.anyim.client.protobuf.Extension.getDefaultInstance() : extension_;
+  public com.hibob.anyim.netty.protobuf.ExtensionOrBuilder getExtensionOrBuilder() {
+    return extension_ == null ? com.hibob.anyim.netty.protobuf.Extension.getDefaultInstance() : extension_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -174,10 +174,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.hibob.anyim.client.protobuf.Msg)) {
+    if (!(obj instanceof com.hibob.anyim.netty.protobuf.Msg)) {
       return super.equals(obj);
     }
-    com.hibob.anyim.client.protobuf.Msg other = (com.hibob.anyim.client.protobuf.Msg) obj;
+    com.hibob.anyim.netty.protobuf.Msg other = (com.hibob.anyim.netty.protobuf.Msg) obj;
 
     if (hasHeader() != other.hasHeader()) return false;
     if (hasHeader()) {
@@ -222,44 +222,44 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.hibob.anyim.client.protobuf.Msg parseFrom(
+  public static com.hibob.anyim.netty.protobuf.Msg parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.hibob.anyim.client.protobuf.Msg parseFrom(
+  public static com.hibob.anyim.netty.protobuf.Msg parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.hibob.anyim.client.protobuf.Msg parseFrom(
+  public static com.hibob.anyim.netty.protobuf.Msg parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.hibob.anyim.client.protobuf.Msg parseFrom(
+  public static com.hibob.anyim.netty.protobuf.Msg parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.hibob.anyim.client.protobuf.Msg parseFrom(byte[] data)
+  public static com.hibob.anyim.netty.protobuf.Msg parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.hibob.anyim.client.protobuf.Msg parseFrom(
+  public static com.hibob.anyim.netty.protobuf.Msg parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.hibob.anyim.client.protobuf.Msg parseFrom(java.io.InputStream input)
+  public static com.hibob.anyim.netty.protobuf.Msg parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.hibob.anyim.client.protobuf.Msg parseFrom(
+  public static com.hibob.anyim.netty.protobuf.Msg parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -267,26 +267,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static com.hibob.anyim.client.protobuf.Msg parseDelimitedFrom(java.io.InputStream input)
+  public static com.hibob.anyim.netty.protobuf.Msg parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static com.hibob.anyim.client.protobuf.Msg parseDelimitedFrom(
+  public static com.hibob.anyim.netty.protobuf.Msg parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.hibob.anyim.client.protobuf.Msg parseFrom(
+  public static com.hibob.anyim.netty.protobuf.Msg parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.hibob.anyim.client.protobuf.Msg parseFrom(
+  public static com.hibob.anyim.netty.protobuf.Msg parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -299,7 +299,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.hibob.anyim.client.protobuf.Msg prototype) {
+  public static Builder newBuilder(com.hibob.anyim.netty.protobuf.Msg prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -320,21 +320,21 @@ private static final long serialVersionUID = 0L;
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:com.hibob.anyim.netty.protobuf.Msg)
-      com.hibob.anyim.client.protobuf.MsgOrBuilder {
+      com.hibob.anyim.netty.protobuf.MsgOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.hibob.anyim.client.protobuf.MsgOuterClass.internal_static_com_hibob_anyim_netty_protobuf_Msg_descriptor;
+      return com.hibob.anyim.netty.protobuf.MsgOuterClass.internal_static_com_hibob_anyim_netty_protobuf_Msg_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.hibob.anyim.client.protobuf.MsgOuterClass.internal_static_com_hibob_anyim_netty_protobuf_Msg_fieldAccessorTable
+      return com.hibob.anyim.netty.protobuf.MsgOuterClass.internal_static_com_hibob_anyim_netty_protobuf_Msg_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.hibob.anyim.client.protobuf.Msg.class, com.hibob.anyim.client.protobuf.Msg.Builder.class);
+              com.hibob.anyim.netty.protobuf.Msg.class, com.hibob.anyim.netty.protobuf.Msg.Builder.class);
     }
 
-    // Construct using com.hibob.anyim.client.protobuf.Msg.newBuilder()
+    // Construct using com.hibob.anyim.netty.protobuf.Msg.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -377,17 +377,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.hibob.anyim.client.protobuf.MsgOuterClass.internal_static_com_hibob_anyim_netty_protobuf_Msg_descriptor;
+      return com.hibob.anyim.netty.protobuf.MsgOuterClass.internal_static_com_hibob_anyim_netty_protobuf_Msg_descriptor;
     }
 
     @java.lang.Override
-    public com.hibob.anyim.client.protobuf.Msg getDefaultInstanceForType() {
-      return com.hibob.anyim.client.protobuf.Msg.getDefaultInstance();
+    public com.hibob.anyim.netty.protobuf.Msg getDefaultInstanceForType() {
+      return com.hibob.anyim.netty.protobuf.Msg.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.hibob.anyim.client.protobuf.Msg build() {
-      com.hibob.anyim.client.protobuf.Msg result = buildPartial();
+    public com.hibob.anyim.netty.protobuf.Msg build() {
+      com.hibob.anyim.netty.protobuf.Msg result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -395,14 +395,14 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.hibob.anyim.client.protobuf.Msg buildPartial() {
-      com.hibob.anyim.client.protobuf.Msg result = new com.hibob.anyim.client.protobuf.Msg(this);
+    public com.hibob.anyim.netty.protobuf.Msg buildPartial() {
+      com.hibob.anyim.netty.protobuf.Msg result = new com.hibob.anyim.netty.protobuf.Msg(this);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartial0(com.hibob.anyim.client.protobuf.Msg result) {
+    private void buildPartial0(com.hibob.anyim.netty.protobuf.Msg result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -428,16 +428,16 @@ private static final long serialVersionUID = 0L;
 
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.hibob.anyim.client.protobuf.Msg) {
-        return mergeFrom((com.hibob.anyim.client.protobuf.Msg)other);
+      if (other instanceof com.hibob.anyim.netty.protobuf.Msg) {
+        return mergeFrom((com.hibob.anyim.netty.protobuf.Msg)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.hibob.anyim.client.protobuf.Msg other) {
-      if (other == com.hibob.anyim.client.protobuf.Msg.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.hibob.anyim.netty.protobuf.Msg other) {
+      if (other == com.hibob.anyim.netty.protobuf.Msg.getDefaultInstance()) return this;
       if (other.hasHeader()) {
         mergeHeader(other.getHeader());
       }
@@ -511,9 +511,9 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private com.hibob.anyim.client.protobuf.Header header_;
+    private com.hibob.anyim.netty.protobuf.Header header_;
     private com.google.protobuf.SingleFieldBuilder<
-        com.hibob.anyim.client.protobuf.Header, com.hibob.anyim.client.protobuf.Header.Builder, com.hibob.anyim.client.protobuf.HeaderOrBuilder> headerBuilder_;
+        com.hibob.anyim.netty.protobuf.Header, com.hibob.anyim.netty.protobuf.Header.Builder, com.hibob.anyim.netty.protobuf.HeaderOrBuilder> headerBuilder_;
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
      * @return Whether the header field is set.
@@ -525,9 +525,9 @@ private static final long serialVersionUID = 0L;
      * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
      * @return The header.
      */
-    public com.hibob.anyim.client.protobuf.Header getHeader() {
+    public com.hibob.anyim.netty.protobuf.Header getHeader() {
       if (headerBuilder_ == null) {
-        return header_ == null ? com.hibob.anyim.client.protobuf.Header.getDefaultInstance() : header_;
+        return header_ == null ? com.hibob.anyim.netty.protobuf.Header.getDefaultInstance() : header_;
       } else {
         return headerBuilder_.getMessage();
       }
@@ -535,7 +535,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
      */
-    public Builder setHeader(com.hibob.anyim.client.protobuf.Header value) {
+    public Builder setHeader(com.hibob.anyim.netty.protobuf.Header value) {
       if (headerBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -552,7 +552,7 @@ private static final long serialVersionUID = 0L;
      * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
      */
     public Builder setHeader(
-        com.hibob.anyim.client.protobuf.Header.Builder builderForValue) {
+        com.hibob.anyim.netty.protobuf.Header.Builder builderForValue) {
       if (headerBuilder_ == null) {
         header_ = builderForValue.build();
       } else {
@@ -565,11 +565,11 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
      */
-    public Builder mergeHeader(com.hibob.anyim.client.protobuf.Header value) {
+    public Builder mergeHeader(com.hibob.anyim.netty.protobuf.Header value) {
       if (headerBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
           header_ != null &&
-          header_ != com.hibob.anyim.client.protobuf.Header.getDefaultInstance()) {
+          header_ != com.hibob.anyim.netty.protobuf.Header.getDefaultInstance()) {
           getHeaderBuilder().mergeFrom(value);
         } else {
           header_ = value;
@@ -599,7 +599,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
      */
-    public com.hibob.anyim.client.protobuf.Header.Builder getHeaderBuilder() {
+    public com.hibob.anyim.netty.protobuf.Header.Builder getHeaderBuilder() {
       bitField0_ |= 0x00000001;
       onChanged();
       return getHeaderFieldBuilder().getBuilder();
@@ -607,23 +607,23 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
      */
-    public com.hibob.anyim.client.protobuf.HeaderOrBuilder getHeaderOrBuilder() {
+    public com.hibob.anyim.netty.protobuf.HeaderOrBuilder getHeaderOrBuilder() {
       if (headerBuilder_ != null) {
         return headerBuilder_.getMessageOrBuilder();
       } else {
         return header_ == null ?
-            com.hibob.anyim.client.protobuf.Header.getDefaultInstance() : header_;
+            com.hibob.anyim.netty.protobuf.Header.getDefaultInstance() : header_;
       }
     }
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
      */
     private com.google.protobuf.SingleFieldBuilder<
-        com.hibob.anyim.client.protobuf.Header, com.hibob.anyim.client.protobuf.Header.Builder, com.hibob.anyim.client.protobuf.HeaderOrBuilder> 
+        com.hibob.anyim.netty.protobuf.Header, com.hibob.anyim.netty.protobuf.Header.Builder, com.hibob.anyim.netty.protobuf.HeaderOrBuilder> 
         getHeaderFieldBuilder() {
       if (headerBuilder_ == null) {
         headerBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-            com.hibob.anyim.client.protobuf.Header, com.hibob.anyim.client.protobuf.Header.Builder, com.hibob.anyim.client.protobuf.HeaderOrBuilder>(
+            com.hibob.anyim.netty.protobuf.Header, com.hibob.anyim.netty.protobuf.Header.Builder, com.hibob.anyim.netty.protobuf.HeaderOrBuilder>(
                 getHeader(),
                 getParentForChildren(),
                 isClean());
@@ -632,9 +632,9 @@ private static final long serialVersionUID = 0L;
       return headerBuilder_;
     }
 
-    private com.hibob.anyim.client.protobuf.Body body_;
+    private com.hibob.anyim.netty.protobuf.Body body_;
     private com.google.protobuf.SingleFieldBuilder<
-        com.hibob.anyim.client.protobuf.Body, com.hibob.anyim.client.protobuf.Body.Builder, com.hibob.anyim.client.protobuf.BodyOrBuilder> bodyBuilder_;
+        com.hibob.anyim.netty.protobuf.Body, com.hibob.anyim.netty.protobuf.Body.Builder, com.hibob.anyim.netty.protobuf.BodyOrBuilder> bodyBuilder_;
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
      * @return Whether the body field is set.
@@ -646,9 +646,9 @@ private static final long serialVersionUID = 0L;
      * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
      * @return The body.
      */
-    public com.hibob.anyim.client.protobuf.Body getBody() {
+    public com.hibob.anyim.netty.protobuf.Body getBody() {
       if (bodyBuilder_ == null) {
-        return body_ == null ? com.hibob.anyim.client.protobuf.Body.getDefaultInstance() : body_;
+        return body_ == null ? com.hibob.anyim.netty.protobuf.Body.getDefaultInstance() : body_;
       } else {
         return bodyBuilder_.getMessage();
       }
@@ -656,7 +656,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
      */
-    public Builder setBody(com.hibob.anyim.client.protobuf.Body value) {
+    public Builder setBody(com.hibob.anyim.netty.protobuf.Body value) {
       if (bodyBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -673,7 +673,7 @@ private static final long serialVersionUID = 0L;
      * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
      */
     public Builder setBody(
-        com.hibob.anyim.client.protobuf.Body.Builder builderForValue) {
+        com.hibob.anyim.netty.protobuf.Body.Builder builderForValue) {
       if (bodyBuilder_ == null) {
         body_ = builderForValue.build();
       } else {
@@ -686,11 +686,11 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
      */
-    public Builder mergeBody(com.hibob.anyim.client.protobuf.Body value) {
+    public Builder mergeBody(com.hibob.anyim.netty.protobuf.Body value) {
       if (bodyBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
           body_ != null &&
-          body_ != com.hibob.anyim.client.protobuf.Body.getDefaultInstance()) {
+          body_ != com.hibob.anyim.netty.protobuf.Body.getDefaultInstance()) {
           getBodyBuilder().mergeFrom(value);
         } else {
           body_ = value;
@@ -720,7 +720,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
      */
-    public com.hibob.anyim.client.protobuf.Body.Builder getBodyBuilder() {
+    public com.hibob.anyim.netty.protobuf.Body.Builder getBodyBuilder() {
       bitField0_ |= 0x00000002;
       onChanged();
       return getBodyFieldBuilder().getBuilder();
@@ -728,23 +728,23 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
      */
-    public com.hibob.anyim.client.protobuf.BodyOrBuilder getBodyOrBuilder() {
+    public com.hibob.anyim.netty.protobuf.BodyOrBuilder getBodyOrBuilder() {
       if (bodyBuilder_ != null) {
         return bodyBuilder_.getMessageOrBuilder();
       } else {
         return body_ == null ?
-            com.hibob.anyim.client.protobuf.Body.getDefaultInstance() : body_;
+            com.hibob.anyim.netty.protobuf.Body.getDefaultInstance() : body_;
       }
     }
     /**
      * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilder<
-        com.hibob.anyim.client.protobuf.Body, com.hibob.anyim.client.protobuf.Body.Builder, com.hibob.anyim.client.protobuf.BodyOrBuilder> 
+        com.hibob.anyim.netty.protobuf.Body, com.hibob.anyim.netty.protobuf.Body.Builder, com.hibob.anyim.netty.protobuf.BodyOrBuilder> 
         getBodyFieldBuilder() {
       if (bodyBuilder_ == null) {
         bodyBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-            com.hibob.anyim.client.protobuf.Body, com.hibob.anyim.client.protobuf.Body.Builder, com.hibob.anyim.client.protobuf.BodyOrBuilder>(
+            com.hibob.anyim.netty.protobuf.Body, com.hibob.anyim.netty.protobuf.Body.Builder, com.hibob.anyim.netty.protobuf.BodyOrBuilder>(
                 getBody(),
                 getParentForChildren(),
                 isClean());
@@ -753,9 +753,9 @@ private static final long serialVersionUID = 0L;
       return bodyBuilder_;
     }
 
-    private com.hibob.anyim.client.protobuf.Extension extension_;
+    private com.hibob.anyim.netty.protobuf.Extension extension_;
     private com.google.protobuf.SingleFieldBuilder<
-        com.hibob.anyim.client.protobuf.Extension, com.hibob.anyim.client.protobuf.Extension.Builder, com.hibob.anyim.client.protobuf.ExtensionOrBuilder> extensionBuilder_;
+        com.hibob.anyim.netty.protobuf.Extension, com.hibob.anyim.netty.protobuf.Extension.Builder, com.hibob.anyim.netty.protobuf.ExtensionOrBuilder> extensionBuilder_;
     /**
      * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
      * @return Whether the extension field is set.
@@ -767,9 +767,9 @@ private static final long serialVersionUID = 0L;
      * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
      * @return The extension.
      */
-    public com.hibob.anyim.client.protobuf.Extension getExtension() {
+    public com.hibob.anyim.netty.protobuf.Extension getExtension() {
       if (extensionBuilder_ == null) {
-        return extension_ == null ? com.hibob.anyim.client.protobuf.Extension.getDefaultInstance() : extension_;
+        return extension_ == null ? com.hibob.anyim.netty.protobuf.Extension.getDefaultInstance() : extension_;
       } else {
         return extensionBuilder_.getMessage();
       }
@@ -777,7 +777,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
      */
-    public Builder setExtension(com.hibob.anyim.client.protobuf.Extension value) {
+    public Builder setExtension(com.hibob.anyim.netty.protobuf.Extension value) {
       if (extensionBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -794,7 +794,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
      */
     public Builder setExtension(
-        com.hibob.anyim.client.protobuf.Extension.Builder builderForValue) {
+        com.hibob.anyim.netty.protobuf.Extension.Builder builderForValue) {
       if (extensionBuilder_ == null) {
         extension_ = builderForValue.build();
       } else {
@@ -807,11 +807,11 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
      */
-    public Builder mergeExtension(com.hibob.anyim.client.protobuf.Extension value) {
+    public Builder mergeExtension(com.hibob.anyim.netty.protobuf.Extension value) {
       if (extensionBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
           extension_ != null &&
-          extension_ != com.hibob.anyim.client.protobuf.Extension.getDefaultInstance()) {
+          extension_ != com.hibob.anyim.netty.protobuf.Extension.getDefaultInstance()) {
           getExtensionBuilder().mergeFrom(value);
         } else {
           extension_ = value;
@@ -841,7 +841,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
      */
-    public com.hibob.anyim.client.protobuf.Extension.Builder getExtensionBuilder() {
+    public com.hibob.anyim.netty.protobuf.Extension.Builder getExtensionBuilder() {
       bitField0_ |= 0x00000004;
       onChanged();
       return getExtensionFieldBuilder().getBuilder();
@@ -849,23 +849,23 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
      */
-    public com.hibob.anyim.client.protobuf.ExtensionOrBuilder getExtensionOrBuilder() {
+    public com.hibob.anyim.netty.protobuf.ExtensionOrBuilder getExtensionOrBuilder() {
       if (extensionBuilder_ != null) {
         return extensionBuilder_.getMessageOrBuilder();
       } else {
         return extension_ == null ?
-            com.hibob.anyim.client.protobuf.Extension.getDefaultInstance() : extension_;
+            com.hibob.anyim.netty.protobuf.Extension.getDefaultInstance() : extension_;
       }
     }
     /**
      * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
      */
     private com.google.protobuf.SingleFieldBuilder<
-        com.hibob.anyim.client.protobuf.Extension, com.hibob.anyim.client.protobuf.Extension.Builder, com.hibob.anyim.client.protobuf.ExtensionOrBuilder> 
+        com.hibob.anyim.netty.protobuf.Extension, com.hibob.anyim.netty.protobuf.Extension.Builder, com.hibob.anyim.netty.protobuf.ExtensionOrBuilder> 
         getExtensionFieldBuilder() {
       if (extensionBuilder_ == null) {
         extensionBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-            com.hibob.anyim.client.protobuf.Extension, com.hibob.anyim.client.protobuf.Extension.Builder, com.hibob.anyim.client.protobuf.ExtensionOrBuilder>(
+            com.hibob.anyim.netty.protobuf.Extension, com.hibob.anyim.netty.protobuf.Extension.Builder, com.hibob.anyim.netty.protobuf.ExtensionOrBuilder>(
                 getExtension(),
                 getParentForChildren(),
                 isClean());
@@ -878,12 +878,12 @@ private static final long serialVersionUID = 0L;
   }
 
   // @@protoc_insertion_point(class_scope:com.hibob.anyim.netty.protobuf.Msg)
-  private static final com.hibob.anyim.client.protobuf.Msg DEFAULT_INSTANCE;
+  private static final com.hibob.anyim.netty.protobuf.Msg DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.hibob.anyim.client.protobuf.Msg();
+    DEFAULT_INSTANCE = new com.hibob.anyim.netty.protobuf.Msg();
   }
 
-  public static com.hibob.anyim.client.protobuf.Msg getDefaultInstance() {
+  public static com.hibob.anyim.netty.protobuf.Msg getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
@@ -919,7 +919,7 @@ private static final long serialVersionUID = 0L;
   }
 
   @java.lang.Override
-  public com.hibob.anyim.client.protobuf.Msg getDefaultInstanceForType() {
+  public com.hibob.anyim.netty.protobuf.Msg getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

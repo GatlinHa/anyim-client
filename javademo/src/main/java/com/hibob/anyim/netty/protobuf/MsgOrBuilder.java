@@ -2,7 +2,7 @@
 // source: msg.proto
 
 // Protobuf Java Version: 4.26.1
-package com.hibob.anyim.client.protobuf;
+package com.hibob.anyim.netty.protobuf;
 
 public interface MsgOrBuilder extends
     // @@protoc_insertion_point(interface_extends:com.hibob.anyim.netty.protobuf.Msg)
@@ -17,11 +17,11 @@ public interface MsgOrBuilder extends
    * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
    * @return The header.
    */
-  com.hibob.anyim.client.protobuf.Header getHeader();
+  com.hibob.anyim.netty.protobuf.Header getHeader();
   /**
    * <code>.com.hibob.anyim.netty.protobuf.Header header = 1;</code>
    */
-  com.hibob.anyim.client.protobuf.HeaderOrBuilder getHeaderOrBuilder();
+  com.hibob.anyim.netty.protobuf.HeaderOrBuilder getHeaderOrBuilder();
 
   /**
    * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
@@ -32,11 +32,11 @@ public interface MsgOrBuilder extends
    * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
    * @return The body.
    */
-  com.hibob.anyim.client.protobuf.Body getBody();
+  com.hibob.anyim.netty.protobuf.Body getBody();
   /**
    * <code>.com.hibob.anyim.netty.protobuf.Body body = 2;</code>
    */
-  com.hibob.anyim.client.protobuf.BodyOrBuilder getBodyOrBuilder();
+  com.hibob.anyim.netty.protobuf.BodyOrBuilder getBodyOrBuilder();
 
   /**
    * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
@@ -47,9 +47,9 @@ public interface MsgOrBuilder extends
    * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
    * @return The extension.
    */
-  com.hibob.anyim.client.protobuf.Extension getExtension();
+  com.hibob.anyim.netty.protobuf.Extension getExtension();
   /**
    * <code>optional .com.hibob.anyim.netty.protobuf.Extension extension = 99;</code>
    */
-  com.hibob.anyim.client.protobuf.ExtensionOrBuilder getExtensionOrBuilder();
+  com.hibob.anyim.netty.protobuf.ExtensionOrBuilder getExtensionOrBuilder();
 }
