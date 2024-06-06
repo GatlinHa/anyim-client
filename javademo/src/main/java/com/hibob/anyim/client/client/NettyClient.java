@@ -36,9 +36,14 @@ import java.util.Scanner;
 @Slf4j
 public class NettyClient {
 
-    public static void start(UserClient userClient, String token, String nettyPort) throws URISyntaxException {
-        NioEventLoopGroup group = new NioEventLoopGroup();
-        Bootstrap bootstrap = new Bootstrap();
+    private static NioEventLoopGroup group;
+    private static Bootstrap bootstrap;
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void start(UserClient userClient, String token, String nettyPort) throws URISyntaxException, InterruptedException {
+        log.info("===>NettyClient start......");
+        group = new NioEventLoopGroup();
+        bootstrap = new Bootstrap();
         URI uri = new URI("ws://localhost:" + nettyPort + "/ws");
         DefaultHttpHeaders headers = new DefaultHttpHeaders();
         headers.add(HttpHeaderNames.AUTHORIZATION, token);
@@ -77,9 +82,12 @@ public class NettyClient {
             ChannelFuture channelFuture = bootstrap.connect(uri.getHost(), uri.getPort()).sync();
 
             // 这里只处理发送出去的消息
-            Scanner scanner = new Scanner(System.in);
             while (true) {
                 String line = scanner.nextLine();
+                if (!channelFuture.channel().isActive()) {
+                    break;
+                }
+
                 if ("exit".equals(line)) {
                     break;
                 }
@@ -115,10 +123,15 @@ public class NettyClient {
                 log.info("===>发给[{}]的消息：{}", toId, content);
             }
 
-            channelFuture.channel().closeFuture().sync();
+            log.info("===>（1）等待5秒开始重连");
+            Thread.sleep(5000);
+            NettyClient.start(userClient, token, nettyPort);
         }
         catch (Exception e) {
             log.error(e.getMessage());
+            log.info("===>（2）等待5秒开始重连");
+            Thread.sleep(5000);
+            NettyClient.start(userClient, token, nettyPort);
         }
         finally {
             group.shutdownGracefully();

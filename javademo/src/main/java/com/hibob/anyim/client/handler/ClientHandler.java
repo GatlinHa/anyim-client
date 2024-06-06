@@ -1,6 +1,7 @@
 package com.hibob.anyim.client.handler;
 
 import com.hibob.anyim.client.consts.Const;
+import com.hibob.anyim.netty.protobuf.Body;
 import com.hibob.anyim.netty.protobuf.Header;
 import com.hibob.anyim.netty.protobuf.Msg;
 import com.hibob.anyim.netty.protobuf.MsgType;
@@ -24,7 +25,33 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
             String fromId = msg.getBody().getFromId();
             String fromClient = msg.getBody().getFromClient();
             String content = msg.getBody().getContent();
-            log.info("<<===收到【{}】发过来的的消息：{}", fromId + "@" + fromClient, content);
+            long msgId = msg.getBody().getMsgId();
+            MsgType msgType = msg.getHeader().getMsgType();
+            log.info("<<===收到【{}】发过来的的消息：{}，msgType是：{}，msgId是：{}", fromId + "@" + fromClient, content, msgType, msgId);
+            Header header = Header.newBuilder()
+                    .setMagic(Const.MAGIC)
+                    .setVersion(0)
+                    .setMsgType(MsgType.READ)
+                    .setIsExtension(false)
+                    .build();
+            Body body = Body.newBuilder()
+                    .setFromId(msg.getBody().getToId())
+                    .setFromClient(msg.getBody().getToClient())
+                    .setToId(msg.getBody().getFromId())
+                    .setSeq(1)
+                    .setAck(1)
+                    .setContent(String.valueOf(msg.getBody().getMsgId()))
+                    .build();
+            Msg msgRead = Msg.newBuilder().setHeader(header).setBody(body).build();
+            ctx.channel().writeAndFlush(msgRead);
+        }
+        else if (msg.getHeader().getMsgType() == MsgType.READ) {
+            String fromId = msg.getBody().getFromId();
+            String fromClient = msg.getBody().getFromClient();
+            String content = msg.getBody().getContent();
+            long msgId = msg.getBody().getMsgId();
+            MsgType msgType = msg.getHeader().getMsgType();
+            log.info("<<===收到【{}】发过来的的消息：{}，msgType是：{}，msgId是：{}", fromId + "@" + fromClient, content, msgType, msgId);
         }
 
     }
