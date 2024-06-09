@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Scanner;
+import java.util.UUID;
 
 
 /**
@@ -117,6 +118,7 @@ public class NettyClient {
                         .setSeq(1)
                         .setAck(1)
                         .setContent(content)
+                        .setTempMsgId(UUID.randomUUID().toString())
                         .build();
                 Msg msg = Msg.newBuilder().setHeader(header).setBody(body).build();
                 channelFuture.channel().writeAndFlush(msg);

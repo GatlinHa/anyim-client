@@ -26,8 +26,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
             String fromClient = msg.getBody().getFromClient();
             String content = msg.getBody().getContent();
             long msgId = msg.getBody().getMsgId();
-            MsgType msgType = msg.getHeader().getMsgType();
-            log.info("<<===收到【{}】发过来的的消息：{}，msgType是：{}，msgId是：{}", fromId + "@" + fromClient, content, msgType, msgId);
+            log.info("<<===收到【{}】发过来的的CHAT消息：{}，msgId是：{}", fromId + "@" + fromClient, content, msgId);
             Header header = Header.newBuilder()
                     .setMagic(Const.MAGIC)
                     .setVersion(0)
@@ -50,8 +49,14 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
             String fromClient = msg.getBody().getFromClient();
             String content = msg.getBody().getContent();
             long msgId = msg.getBody().getMsgId();
-            MsgType msgType = msg.getHeader().getMsgType();
-            log.info("<<===收到【{}】发过来的的消息：{}，msgType是：{}，msgId是：{}", fromId + "@" + fromClient, content, msgType, msgId);
+            log.info("<<===收到【{}】发过来的的READ消息：{}，msgId是：{}", fromId + "@" + fromClient, content, msgId);
+        }
+        else if (msg.getHeader().getMsgType() == MsgType.DELIVERED) {
+            String fromId = msg.getBody().getFromId();
+            String toId = msg.getBody().getToId();
+            String tempMsgId = msg.getBody().getTempMsgId();
+            long msgId = msg.getBody().getMsgId();
+            log.info("<<===【{}】发给【{}】的tempMsgId={}的消息，已从服务器收到DELIVERED消息，服务端分配的msgId是{}", fromId, toId, tempMsgId, msgId);
         }
 
     }
