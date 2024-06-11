@@ -10,6 +10,8 @@ import io.netty.handler.codec.http.websocketx.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.UUID;
+
 @Slf4j
 @Data
 public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
@@ -40,6 +42,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
                     .setSeq(1)
                     .setAck(1)
                     .setContent(String.valueOf(msg.getBody().getMsgId()))
+                    .setTempMsgId(UUID.randomUUID().toString())
                     .build();
             Msg msgRead = Msg.newBuilder().setHeader(header).setBody(body).build();
             ctx.channel().writeAndFlush(msgRead);
@@ -49,14 +52,19 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
             String fromClient = msg.getBody().getFromClient();
             String content = msg.getBody().getContent();
             long msgId = msg.getBody().getMsgId();
-            log.info("<<===收到【{}】发过来的的READ消息：{}，msgId是：{}", fromId + "@" + fromClient, content, msgId);
+            log.info("<<===收到【{}】发过来的的READ消息，已读的消息内容是：{}，msgId是：{}", fromId + "@" + fromClient, content, msgId);
         }
         else if (msg.getHeader().getMsgType() == MsgType.DELIVERED) {
-            String fromId = msg.getBody().getFromId();
-            String toId = msg.getBody().getToId();
+            String sessionId = msg.getBody().getSessionId();
             String tempMsgId = msg.getBody().getTempMsgId();
             long msgId = msg.getBody().getMsgId();
-            log.info("<<===【{}】发给【{}】的tempMsgId={}的消息，已从服务器收到DELIVERED消息，服务端分配的msgId是{}", fromId, toId, tempMsgId, msgId);
+            log.info("<<===收到sessionId：【{}】中，tempMsgId是：{} 消息的DELIVERED（已发送）消息，服务端分配的msgId是：{}", sessionId, tempMsgId, msgId);
+        }
+        else if (msg.getHeader().getMsgType() == MsgType.SENDER_SYNC) {
+            String fromClient = msg.getBody().getFromClient();
+            String content = msg.getBody().getContent();
+            long msgId = msg.getBody().getMsgId();
+            log.info("<<===收到本账号其它在线设备【{}】发过来的的SENDER_SYNC消息，消息内容是：{}，sessionId是：{}，msgId是：{}", fromClient, content, msg.getBody().getSessionId(), msgId);
         }
 
     }
