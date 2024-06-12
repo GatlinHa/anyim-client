@@ -3,6 +3,7 @@ package com.hibob.anyim.client;
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.client.NettyClient;
 import com.hibob.anyim.client.client.UserClient;
+import com.hibob.anyim.client.consts.Users;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 
@@ -12,57 +13,16 @@ import java.util.Map;
 
 @Slf4j
 public class ClientMain {
-
-    private static final UserClient userClient11 = new UserClient(
-            "test_account_01",
-            "test_clientId_01",
-            "test_headImage_01",
-            "test_inviteCode_01",
-            "test_nickName_01",
-            "123456",
-            "test_phoneNum_01"
-    );
-
-    private static final UserClient userClient12 = new UserClient(
-            "test_account_01",
-            "test_clientId_02",
-            "test_headImage_01",
-            "test_inviteCode_01",
-            "test_nickName_01",
-            "123456",
-            "test_phoneNum_01"
-    );
-
-    private static final UserClient userClient21 = new UserClient(
-            "test_account_02",
-            "test_clientId_01",
-            "test_headImage_02",
-            "test_inviteCode_02",
-            "test_nickName_02",
-            "123456",
-            "test_phoneNum_02"
-    );
-
-    private static final UserClient userClient22 = new UserClient(
-            "test_account_02",
-            "test_clientId_02",
-            "test_headImage_02",
-            "test_inviteCode_02",
-            "test_nickName_02",
-            "123456",
-            "test_phoneNum_02"
-    );
-
     private static final Map<String, UserClient> startupCmdMap = new HashMap<>();
 
     private static String token ="";
     private static String signKey ="";
 
     static {
-        startupCmdMap.put("11", userClient11);
-        startupCmdMap.put("12", userClient12);
-        startupCmdMap.put("21", userClient21);
-        startupCmdMap.put("22", userClient22);
+        startupCmdMap.put("11", Users.ACCOUNT_01_CLIENTID_01);
+        startupCmdMap.put("12", Users.ACCOUNT_01_CLIENTID_02);
+        startupCmdMap.put("21", Users.ACCOUNT_02_CLIENTID_01);
+        startupCmdMap.put("22", Users.ACCOUNT_02_CLIENTID_02);
     }
 
     public static void register(UserClient userClient) throws Exception {
