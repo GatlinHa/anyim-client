@@ -26,7 +26,7 @@ public class ChatClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public ResponseEntity<String> pullMsg(long lastMsgId, long lastPullTime) throws Exception {
+    public ResponseEntity<String> pullMsg(long lastMsgId, long lastPullTime, int pageSize) throws Exception {
         userClientLocal.login();
         String url = "http://localhost:80/chat/pullMsg";
         HttpHeaders headers = getHttpHeaders(userClientLocal.getAccessToken(), userClientLocal.getAccessSecret());
@@ -34,6 +34,27 @@ public class ChatClient {
         map.put("toAccount", userClientPeer.getAccount());
         map.put("lastMsgId", lastMsgId);
         map.put("lastPullTime", lastPullTime);
+        map.put("pageSize", pageSize);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                new URI(url),
+                HttpMethod.POST,
+                request,
+                String.class);
+
+        return response;
+    }
+
+    public ResponseEntity<String> history(long startTime, long endTime, long lastMsgId, int pageSize) throws Exception {
+        userClientLocal.login();
+        String url = "http://localhost:80/chat/history";
+        HttpHeaders headers = getHttpHeaders(userClientLocal.getAccessToken(), userClientLocal.getAccessSecret());
+        Map<String, Object> map = new HashMap<>();
+        map.put("toAccount", userClientPeer.getAccount());
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("lastMsgId", lastMsgId);
+        map.put("pageSize", pageSize);
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response = restTemplate.exchange(
                 new URI(url),

@@ -8,10 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
 
 @Slf4j
-public class PullChatMsgTest {
+public class HistoryChatTest {
 
     private static ChatClient chatClient = new ChatClient(Users.ACCOUNT_01_CLIENTID_01, Users.ACCOUNT_02_CLIENTID_01);
 
@@ -19,8 +19,11 @@ public class PullChatMsgTest {
     public void test01() throws Exception {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
         long lastMsgId = -1;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long startTime = sdf.parse("2024-06-12 00:00:00").getTime()/1000;
+        long endTime = sdf.parse("2024-06-13 00:00:00").getTime()/1000;
         while (true) {
-            ResponseEntity<String> response = chatClient.pullMsg(lastMsgId, new Date().getTime() / 1000, 2);
+            ResponseEntity<String> response = chatClient.history(startTime, endTime, lastMsgId, 2);
             JSONObject jsonObject = JSONObject.parseObject(response.getBody()).getJSONObject("data");
             long count = jsonObject.getLong("count");
             lastMsgId = jsonObject.getLong("lastMsgId");
