@@ -21,8 +21,6 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
@@ -37,17 +35,24 @@ import java.util.UUID;
 @Slf4j
 public class NettyClient {
 
-    private static NioEventLoopGroup group;
-    private static Bootstrap bootstrap;
-    private static Scanner scanner = new Scanner(System.in);
+    private UserClient userClient;
+    private String nettyPort;
+    private NioEventLoopGroup group;
+    private Bootstrap bootstrap;
+    private Channel channel;
 
-    public static void start(UserClient userClient, String token, String nettyPort) throws URISyntaxException, InterruptedException {
+    public NettyClient(UserClient userClient, String nettyPort) {
+        this.userClient = userClient;
+        this.nettyPort = nettyPort;
+    }
+
+    public void start() throws URISyntaxException, InterruptedException {
         log.info("===>NettyClient start......");
         group = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
         URI uri = new URI("ws://localhost:" + nettyPort + "/ws");
         DefaultHttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaderNames.AUTHORIZATION, token);
+        headers.add(HttpHeaderNames.AUTHORIZATION, userClient.getAccessToken());
         headers.add("account", userClient.getAccount());
         headers.add("clientId", userClient.getClientId());
         try {
@@ -59,7 +64,6 @@ public class NettyClient {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-//                            pipeline.addLast(new LoggingHandler(LogLevel.DEBUG));
                             pipeline.addLast(new HttpClientCodec());
                             pipeline.addLast(new ChunkedWriteHandler());
                             pipeline.addLast(new HttpObjectAggregator(65536));
@@ -81,63 +85,91 @@ public class NettyClient {
                         }
                     });
             ChannelFuture channelFuture = bootstrap.connect(uri.getHost(), uri.getPort()).sync();
-
-            // 这里只处理发送出去的消息
-            while (true) {
-                String line = scanner.nextLine();
-                if (!channelFuture.channel().isActive()) {
-                    break;
-                }
-
-                if ("exit".equals(line)) {
-                    break;
-                }
-                // 根据line中"[user01]"符号，解析出要发送的对方账号user01
-                String toId = "";
-                String content = "";
-                try {
-                    toId = line.substring(line.indexOf("[") + 1, line.indexOf("]"));
-                    // 然后解析出后面要发送的内容
-                    content = line.substring(line.indexOf("]") + 1);
-                }
-                catch (Exception e) {
-                    log.info("===>输入非法");
-                    continue;
-                }
-
-                Header header = Header.newBuilder()
-                        .setMagic(Const.MAGIC)
-                        .setVersion(0)
-                        .setMsgType(MsgType.CHAT)
-                        .setIsExtension(false)
-                        .build();
-                Body body = Body.newBuilder()
-                        .setFromId(userClient.getAccount())
-                        .setFromClient(userClient.getClientId())
-                        .setToId(toId)
-                        .setSeq(1)
-                        .setAck(1)
-                        .setContent(content)
-                        .setTempMsgId(UUID.randomUUID().toString())
-                        .build();
-                Msg msg = Msg.newBuilder().setHeader(header).setBody(body).build();
-                channelFuture.channel().writeAndFlush(msg);
-                log.info("===>发给[{}]的消息：{}", toId, content);
-            }
-
-            log.info("===>（1）等待5秒开始重连");
-            Thread.sleep(5000);
-            NettyClient.start(userClient, token, nettyPort);
+            channel = channelFuture.channel();
         }
         catch (Exception e) {
             log.error(e.getMessage());
-            log.info("===>（2）等待5秒开始重连");
-            Thread.sleep(5000);
-            NettyClient.start(userClient, token, nettyPort);
         }
-        finally {
-            group.shutdownGracefully();
-        }
-
     }
+
+    public void stop() {
+        group.shutdownGracefully();
+    }
+
+    public void scannerIn() throws URISyntaxException, InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String line = scanner.nextLine();
+            if ("exit".equals(line)) {
+                log.info("===>会话结束");
+                stop();
+                break;
+            }
+
+            // 根据line中"[user01]"符号，解析出要发送的对方账号user01
+            String toId = "";
+            String content = "";
+            try {
+                toId = line.substring(line.indexOf("@") + 1, line.indexOf(" "));
+                content = line.substring(line.indexOf("@") + 1);
+
+            }
+            catch (Exception e) {
+                log.info("===>输入非法");
+            }
+
+            if (!channel.isActive()) {
+                start();
+            }
+            sendChat(toId, content);
+        }
+    }
+
+    public void send(MsgType msgType, String toId, String content) {
+        switch (msgType) {
+            case CHAT:
+                sendChat(toId, content);
+                break;
+            case READ:
+//                sendRead(toId, content);
+                break;
+            case DELIVERED:
+//                sendDelivered(toId, content);
+                break;
+            case SENDER_SYNC:
+//                sendSenderSync(toId, content);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void sendChat(String toId, String content) {
+        Header header = Header.newBuilder()
+                .setMagic(Const.MAGIC)
+                .setVersion(0)
+                .setMsgType(MsgType.CHAT)
+                .setIsExtension(false)
+                .build();
+        Body body = Body.newBuilder()
+                .setFromId("account_test01")
+                .setFromClient("clientId_test01")
+                .setToId(toId)
+                .setSeq(1)
+                .setAck(1)
+                .setContent(content)
+                .setTempMsgId(UUID.randomUUID().toString())
+                .build();
+        Msg msg = Msg.newBuilder().setHeader(header).setBody(body).build();
+        channel.writeAndFlush(msg).addListener(future -> {
+            if (future.isSuccess()) {
+                log.info("===>发送成功：发给[{}]的消息：{}", toId, content);
+            }
+            else {
+                log.info("===>发送失败：发给[{}]的消息：{}", toId, content);
+            }
+        });
+    }
+
+
 }

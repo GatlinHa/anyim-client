@@ -49,11 +49,12 @@ public class ClientMain {
     public static void main(String[] args) throws Exception {
         UserClient userClient = startupCmdMap.get(args[0]);
         if (!userClient.validateAccount()) {
-            register(userClient);
+            userClient.register();
         }
-        login(userClient);
-        NettyClient.start(userClient, token, args[1]);
-
+        userClient.login();
+        NettyClient nettyClient = new NettyClient(userClient, args[1]);
+        nettyClient.start();
+        nettyClient.scannerIn();
     }
 
 }
