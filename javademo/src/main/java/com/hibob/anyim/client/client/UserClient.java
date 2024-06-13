@@ -20,7 +20,7 @@ public class UserClient {
 
     private String account;
     private String clientId;
-    private String headImage;
+    private String avatar;
     private String inviteCode;
     private String nickName;
     private String password;
@@ -29,7 +29,7 @@ public class UserClient {
     private String accessSecret;
     private String refreshToken;
     private String refreshSecret;
-    private String headImageThumb;
+    private String avatarThumb;
     private String sex;
     private String level;
     private String signature;
@@ -37,7 +37,7 @@ public class UserClient {
     public UserClient(
             String account,
             String clientId,
-            String headImage,
+            String avatar,
             String inviteCode,
             String nickName,
             String password,
@@ -45,7 +45,7 @@ public class UserClient {
     ) {
         this.account = account;
         this.clientId = clientId;
-        this.headImage = headImage;
+        this.avatar = avatar;
         this.inviteCode = inviteCode;
         this.nickName = nickName;
         this.password = password;
@@ -55,7 +55,7 @@ public class UserClient {
     public UserClient(UserClient userClient) {
         this.account = userClient.account;
         this.clientId = userClient.clientId;
-        this.headImage = userClient.headImage;
+        this.avatar = userClient.avatar;
         this.inviteCode = userClient.inviteCode;
         this.nickName = userClient.nickName;
         this.password = userClient.password;
@@ -64,7 +64,7 @@ public class UserClient {
         this.accessSecret = userClient.accessSecret;
         this.refreshToken = userClient.refreshToken;
         this.refreshSecret = userClient.refreshSecret;
-        this.headImageThumb = userClient.headImageThumb;
+        this.avatarThumb = userClient.avatarThumb;
         this.sex = userClient.sex;
         this.level = userClient.level;
         this.signature = userClient.signature;
@@ -77,7 +77,7 @@ public class UserClient {
         HttpHeaders headers = new HttpHeaders();
         Map<String, String> map = new HashMap<>();
         map.put("account", account);
-        map.put("headImage", headImage);
+        map.put("avatar", avatar);
         map.put("inviteCode", inviteCode);
         map.put("nickName", nickName);
         map.put("password", password);
@@ -270,8 +270,8 @@ public class UserClient {
     }
 
     public ResponseEntity<String> modifySelf(String nickName,
-                                 String headImage,
-                                 String headImageThumb,
+                                 String avatar,
+                                 String avatarThumb,
                                  String sex,
                                  String level,
                                  String signature) throws Exception {
@@ -279,8 +279,8 @@ public class UserClient {
         HttpHeaders headers = getHttpHeaders(accessToken, accessSecret);
         Map<String, String> map = new HashMap<>();
         map.put("nickName", nickName);
-        map.put("headImage", headImage);
-        map.put("headImageThumb", headImageThumb);
+        map.put("avatar", avatar);
+        map.put("avatarThumb", avatarThumb);
         map.put("sex", sex);
         map.put("level", level);
         map.put("signature", signature);

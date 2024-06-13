@@ -15,7 +15,7 @@ public class ModifySelfTest {
     private static UserClient user01 = new UserClient(
             "account_test01",
             "clientId_test01",
-            "headImage_test01",
+            "avatar_test01",
             "inviteCode_test01",
             "nickName_test01",
             "password_test01",
@@ -26,8 +26,8 @@ public class ModifySelfTest {
     @Before
     public void beforeTest() throws Exception {
         user01_new.setNickName("nick_name_test01_new");
-        user01_new.setHeadImage("head_image_test01_new");
-        user01_new.setHeadImageThumb("head_image_thumb_test01_new");
+        user01_new.setAvatar("avatar_test01_new");
+        user01_new.setAvatarThumb("avatar_thumb_test01_new");
         user01_new.setSex("1");
         user01_new.setLevel("0");
         user01_new.setSignature("signature_test01_new");
@@ -52,8 +52,8 @@ public class ModifySelfTest {
         ResponseEntity<String> response3 = user01.querySelf();
         // 修改self
         ResponseEntity<String> response4 = user01.modifySelf(user01_new.getNickName(),
-                user01_new.getHeadImage(),
-                user01_new.getHeadImageThumb(),
+                user01_new.getAvatar(),
+                user01_new.getAvatarThumb(),
                 user01_new.getSex(),
                 user01_new.getLevel(),
                 user01_new.getSignature());

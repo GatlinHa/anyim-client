@@ -17,7 +17,7 @@ public class DeregisterTest {
     private static UserClient user01 = new UserClient(
             "account_test01",
             "clientId_test01",
-            "headImage_test01",
+            "avatar_test01",
             "inviteCode_test01",
             "nickName_test01",
             "password_test01",

@@ -17,7 +17,7 @@ public class FindByNickTest {
     private static UserClient user01 = new UserClient(
             "account_test01",
             "clientId_test01",
-            "headImage_test01",
+            "avatar_test01",
             "inviteCode_test01",
             "nickName_test01",
             "password_test01",
@@ -26,7 +26,7 @@ public class FindByNickTest {
     private static UserClient user02 = new UserClient(
             "account_test02",
             "clientId_test02",
-            "headImage_test02",
+            "avatar_test02",
             "inviteCode_test02",
             "nickName_test02",
             "password_test02",
@@ -35,7 +35,7 @@ public class FindByNickTest {
     private static UserClient user03 = new UserClient(
             "account_test03",
             "clientId_test03",
-            "headImage_test03",
+            "avatar_test03",
             "inviteCode_test03",
             "nickName_test03",
             "password_test03",
