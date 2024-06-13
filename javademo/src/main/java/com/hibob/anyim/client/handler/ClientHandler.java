@@ -7,6 +7,7 @@ import com.hibob.anyim.netty.protobuf.Msg;
 import com.hibob.anyim.netty.protobuf.MsgType;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.*;
+import io.netty.util.AttributeKey;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +22,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
         if (msg.getHeader().getMsgType() == MsgType.HELLO)
         {
             log.info("<<===收到了Netty服务端答复的Hello消息");
+            ctx.channel().attr(AttributeKey.valueOf("hello")).set(true);
         }
         else if (msg.getHeader().getMsgType() == MsgType.CHAT) {
             // 这里是只做收到的消息展示

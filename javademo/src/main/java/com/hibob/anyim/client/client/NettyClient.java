@@ -21,6 +21,7 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
@@ -46,7 +47,12 @@ public class NettyClient {
         this.nettyPort = nettyPort;
     }
 
-    public void start() throws URISyntaxException, InterruptedException {
+    public NettyClient(UserClient userClient) {
+        this.userClient = userClient;
+        this.nettyPort = "80";
+    }
+
+    public void start() throws URISyntaxException {
         log.info("===>NettyClient start......");
         group = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
@@ -111,7 +117,7 @@ public class NettyClient {
             String content = "";
             try {
                 toId = line.substring(line.indexOf("@") + 1, line.indexOf(" "));
-                content = line.substring(line.indexOf("@") + 1);
+                content = line.substring(line.indexOf(" ") + 1);
 
             }
             catch (Exception e) {
@@ -125,7 +131,7 @@ public class NettyClient {
         }
     }
 
-    public void send(MsgType msgType, String toId, String content) {
+    public void send(MsgType msgType, String toId, String content) throws InterruptedException {
         switch (msgType) {
             case CHAT:
                 sendChat(toId, content);
@@ -144,7 +150,7 @@ public class NettyClient {
         }
     }
 
-    private void sendChat(String toId, String content) {
+    private void sendChat(String toId, String content) throws InterruptedException {
         Header header = Header.newBuilder()
                 .setMagic(Const.MAGIC)
                 .setVersion(0)
@@ -152,8 +158,8 @@ public class NettyClient {
                 .setIsExtension(false)
                 .build();
         Body body = Body.newBuilder()
-                .setFromId("account_test01")
-                .setFromClient("clientId_test01")
+                .setFromId(userClient.getAccount())
+                .setFromClient(userClient.getClientId())
                 .setToId(toId)
                 .setSeq(1)
                 .setAck(1)
@@ -161,12 +167,25 @@ public class NettyClient {
                 .setTempMsgId(UUID.randomUUID().toString())
                 .build();
         Msg msg = Msg.newBuilder().setHeader(header).setBody(body).build();
+
+        // 等待握手成功
+        int timeOutCnt = 30;
+        while (timeOutCnt > 0) {
+            Object hello = channel.attr(AttributeKey.valueOf("hello")).get();
+            if (hello == null) {
+                Thread.sleep(100);
+                timeOutCnt--;
+                continue;
+            }
+            log.info("===握手成功，开始发送消息");
+            break;
+        }
         channel.writeAndFlush(msg).addListener(future -> {
             if (future.isSuccess()) {
                 log.info("===>发送成功：发给[{}]的消息：{}", toId, content);
             }
             else {
-                log.info("===>发送失败：发给[{}]的消息：{}", toId, content);
+                log.info("===>发送失败：发给[{}]的消息：{}，失败原因：{}", toId, content, future.cause().getMessage());
             }
         });
     }
