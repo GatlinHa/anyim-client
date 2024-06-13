@@ -73,4 +73,51 @@ public class HistoryChatTest {
         nettyClient.stop();
         assertTrue(false);
     }
+
+    /**
+     * 测试消息发出去多条特定消息，再拉取消息，看是否能全部拉取到
+     * @throws Exception
+     */
+    @Test
+    public void test02() throws Exception {
+        log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        long startTime = new Date().getTime();
+        ChatClient chatClient = new ChatClient(user01, user02);
+        NettyClient nettyClient = new NettyClient(user01);
+        nettyClient.start();
+        String content = UUID.randomUUID().toString();
+        int sendCnt = 20;
+        int i = 0;
+        while (i < sendCnt) {
+            nettyClient.send(MsgType.CHAT, user02.getAccount(), content);
+            i++;
+        }
+        long endTime = startTime+ 60000;
+        long lastMsgId = -1;
+
+        int cnt = 0;
+        while (true) {
+            ResponseEntity<String> response = chatClient.history(startTime, endTime, lastMsgId, 10);
+            JSONObject jsonObject = JSONObject.parseObject(response.getBody()).getJSONObject("data");
+            long count = jsonObject.getLong("count");
+            lastMsgId = jsonObject.getLong("lastMsgId");
+            JSONArray msgList = jsonObject.getJSONArray("msgList");
+            for (Object msg : msgList) {
+                JSONObject msgJson = (JSONObject) msg;
+                String s = msgJson.getString("content");
+                if (content.equals(s)) {
+                    cnt++;
+                }
+            }
+
+            log.info("=======>count: {}, lastMsgId: {}, msgList: {}", count, lastMsgId, msgList);
+            if (msgList.size() == count) {
+                break;
+            }
+        }
+
+        nettyClient.stop();
+        assertTrue(cnt == sendCnt);
+    }
 }
