@@ -20,6 +20,7 @@ public class GroupClient {
 
     private UserClient userLocal;
 
+    private long groupId;
     private int groupType;
     private String groupName;
     private String announcement;
@@ -41,6 +42,7 @@ public class GroupClient {
     }
 
     public GroupClient(GroupClient groupClient) {
+        this.groupId = groupClient.getGroupId();
         this.userLocal = groupClient.getUserLocal();
         this.groupType = groupClient.getGroupType();
         this.groupName = groupClient.groupName;
@@ -60,6 +62,27 @@ public class GroupClient {
         map.put("announcement", announcement);
         map.put("avatar", avatar);
         map.put("members", members);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(
+                    new URI(url),
+                    HttpMethod.POST,
+                    request,
+                    String.class);
+        }
+        catch (HttpClientErrorException.Unauthorized e) {
+            response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return response;
+        }
+        return response;
+    }
+
+    public ResponseEntity<String> queryGroup() throws Exception {
+        String url = "http://localhost:80/groupmng/queryGroup";
+        HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
+        Map<String, Object> map = new HashMap<>();
+        map.put("groupId", groupId);
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
         try {

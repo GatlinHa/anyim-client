@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.junit.Assert.assertTrue;
 
 @Slf4j
-public class CreateGroupTest {
+public class QueryGroupTest {
 
     private static GroupClient group01 = new GroupClient(
             null,
@@ -49,7 +49,8 @@ public class CreateGroupTest {
             user04.register();
         }
         user01.login();
-        group01.setUserLocal(user01);
+        user04.login();
+
         List<Map<String, Object>> members = new ArrayList<>();
         members.add(new HashMap<String, Object>(){{
             put("memberAccount", user01.getAccount());
@@ -63,34 +64,23 @@ public class CreateGroupTest {
             put("memberAccount", user03.getAccount());
             put("memberRole", 0);
         }});
-        members.add(new HashMap<String, Object>(){{
-            put("memberAccount", user04.getAccount());
-            put("memberRole", 0);
-        }});
         group01.setMembers(members);
     }
 
     @Test
     public void test01() throws Exception {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+        group01.setUserLocal(user01);
         ResponseEntity<String> response = group01.createGroup();
-        assertTrue(JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONArray("members").size() == 4);
+        Long groupId = JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONObject("groupInfo").getLong("groupId");
+        group01.setGroupId(groupId);
 
-        user02.login();
-        user02.deregister();
-        response = group01.createGroup();
+        response = group01.queryGroup();
         assertTrue(JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONArray("members").size() == 3);
 
-        user03.login();
-        user03.deregister();
-        response = group01.createGroup();
-        assertTrue(Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 501);
-
-        user04.login();
-        user04.deregister();
-        response = group01.createGroup();
-        assertTrue(Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 501);
-
+        group01.setUserLocal(user04);
+        response = group01.queryGroup();
+        assertTrue(Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 502);
     }
 
     @After
