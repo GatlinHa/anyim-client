@@ -1,6 +1,7 @@
 package com.hibob.anyim.client;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hibob.anyim.entity.User;
 import com.hibob.anyim.utils.JwtUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -18,70 +19,18 @@ import java.util.UUID;
 @Slf4j
 public class UserClient {
 
-    private String account;
-    private String clientId;
-    private String avatar;
-    private String inviteCode;
-    private String nickName;
-    private String password;
-    private String phoneNum;
-    private String accessToken;
-    private String accessSecret;
-    private String refreshToken;
-    private String refreshSecret;
-    private String avatarThumb;
-    private String sex;
-    private String level;
-    private String signature;
+    private static final RestTemplate restTemplate = new RestTemplate();
 
-    public UserClient(
-            String account,
-            String clientId,
-            String avatar,
-            String inviteCode,
-            String nickName,
-            String password,
-            String phoneNum
-    ) {
-        this.account = account;
-        this.clientId = clientId;
-        this.avatar = avatar;
-        this.inviteCode = inviteCode;
-        this.nickName = nickName;
-        this.password = password;
-        this.phoneNum = phoneNum;
-    }
-
-    public UserClient(UserClient userClient) {
-        this.account = userClient.account;
-        this.clientId = userClient.clientId;
-        this.avatar = userClient.avatar;
-        this.inviteCode = userClient.inviteCode;
-        this.nickName = userClient.nickName;
-        this.password = userClient.password;
-        this.phoneNum = userClient.phoneNum;
-        this.accessToken = userClient.accessToken;
-        this.accessSecret = userClient.accessSecret;
-        this.refreshToken = userClient.refreshToken;
-        this.refreshSecret = userClient.refreshSecret;
-        this.avatarThumb = userClient.avatarThumb;
-        this.sex = userClient.sex;
-        this.level = userClient.level;
-        this.signature = userClient.signature;
-    }
-
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    public ResponseEntity<String> register() throws Exception {
+    public static ResponseEntity<String> register(User user) throws Exception {
         String url = "http://localhost:80/user/register";
         HttpHeaders headers = new HttpHeaders();
         Map<String, String> map = new HashMap<>();
-        map.put("account", account);
-        map.put("avatar", avatar);
-        map.put("inviteCode", inviteCode);
-        map.put("nickName", nickName);
-        map.put("password", password);
-        map.put("phoneNum", phoneNum);
+        map.put("account", user.getAccount());
+        map.put("avatar", user.getAvatar());
+        map.put("inviteCode", user.getInviteCode());
+        map.put("nickName", user.getNickName());
+        map.put("password", user.getPassword());
+        map.put("phoneNum", user.getPhoneNum());
         HttpEntity<Map<String, String>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
         try {
@@ -98,13 +47,13 @@ public class UserClient {
         return response;
     }
 
-    public ResponseEntity<String> login() throws Exception {
+    public static ResponseEntity<String> login(User user) throws Exception {
         String url = "http://localhost:80/user/login";
         HttpHeaders headers = new HttpHeaders();
         Map<String, String> map = new HashMap<>();
-        map.put("account", account);
-        map.put("clientId", clientId);
-        map.put("password", password);
+        map.put("account", user.getAccount());
+        map.put("clientId", user.getClientId());
+        map.put("password", user.getPassword());
         HttpEntity<Map<String, String>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
         try {
@@ -120,10 +69,16 @@ public class UserClient {
         }
 
         JSONObject jsonObject = JSONObject.parseObject(response.getBody());
-        accessToken = jsonObject.getJSONObject("data").getJSONObject("accessToken").getString("token");
-        accessSecret = jsonObject.getJSONObject("data").getJSONObject("accessToken").getString("secret");
-        refreshToken = jsonObject.getJSONObject("data").getJSONObject("refreshToken").getString("token");
-        refreshSecret = jsonObject.getJSONObject("data").getJSONObject("refreshToken").getString("secret");
+        String accessToken = jsonObject.getJSONObject("data").getJSONObject("accessToken").getString("token");
+        String accessSecret = jsonObject.getJSONObject("data").getJSONObject("accessToken").getString("secret");
+        String refreshToken = jsonObject.getJSONObject("data").getJSONObject("refreshToken").getString("token");
+        String refreshSecret = jsonObject.getJSONObject("data").getJSONObject("refreshToken").getString("secret");
+
+        user.setAccessToken(accessToken);
+        user.setAccessSecret(accessSecret);
+        user.setRefreshToken(refreshToken);
+        user.setRefreshSecret(refreshSecret);
+
         return response;
     }
 
@@ -132,11 +87,11 @@ public class UserClient {
      * @return
      * @throws Exception
      */
-    public Boolean validateAccount() throws Exception {
+    public static Boolean validateAccount(User user) throws Exception {
         String url = "http://localhost:80/user/validateAccount";
         HttpHeaders headers = new HttpHeaders();
         Map<String, String> map = new HashMap<>();
-        map.put("account", account);
+        map.put("account", user.getAccount());
         HttpEntity<Map<String, String>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
         try {
@@ -159,9 +114,9 @@ public class UserClient {
         }
     }
 
-    public ResponseEntity<String> logout() throws Exception {
+    public static ResponseEntity<String> logout(User user) throws Exception {
         String url = "http://localhost:80/user/logout";
-        HttpHeaders headers = getHttpHeaders(accessToken, accessSecret);
+        HttpHeaders headers = getHttpHeaders(user.getAccessToken(), user.getAccessSecret());
         Map<String, String> map = new HashMap<>();
         HttpEntity<Map<String, String>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
@@ -179,9 +134,9 @@ public class UserClient {
         return response;
     }
 
-    public ResponseEntity<String> deregister() throws Exception {
+    public static ResponseEntity<String> deregister(User user) throws Exception {
         String url = "http://localhost:80/user/deregister";
-        HttpHeaders headers = getHttpHeaders(accessToken, accessSecret);
+        HttpHeaders headers = getHttpHeaders(user.getAccessToken(), user.getAccessSecret());
         Map<String, String> map = new HashMap<>();
         HttpEntity<Map<String, String>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
@@ -200,9 +155,9 @@ public class UserClient {
         return response;
     }
 
-    public ResponseEntity<String> modifyPwd(String oldPassword, String password) throws Exception {
+    public static ResponseEntity<String> modifyPwd(User user, String oldPassword, String password) throws Exception {
         String url = "http://localhost:80/user/modifyPwd";
-        HttpHeaders headers = getHttpHeaders(accessToken, accessSecret);
+        HttpHeaders headers = getHttpHeaders(user.getAccessToken(), user.getAccessSecret());
         Map<String, String> map = new HashMap<>();
         map.put("oldPassword", oldPassword);
         map.put("password", password);
@@ -223,9 +178,9 @@ public class UserClient {
         return response;
     }
 
-    public ResponseEntity<String> refreshToken() throws Exception {
+    public static ResponseEntity<String> refreshToken(User user) throws Exception {
         String url = "http://localhost:80/user/refreshToken";
-        HttpHeaders headers = getHttpHeadersForRefresh(refreshToken, refreshSecret);
+        HttpHeaders headers = getHttpHeadersForRefresh(user.getRefreshToken(), user.getRefreshSecret());
         Map<String, String> map = new HashMap<>();
         HttpEntity<Map<String, String>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
@@ -242,15 +197,18 @@ public class UserClient {
         }
 
         JSONObject jsonObject = JSONObject.parseObject(response.getBody());
-        accessToken = jsonObject.getJSONObject("data").getJSONObject("accessToken").getString("token");
-        accessSecret = jsonObject.getJSONObject("data").getJSONObject("accessToken").getString("secret");
+        String accessToken = jsonObject.getJSONObject("data").getJSONObject("accessToken").getString("token");
+        String accessSecret = jsonObject.getJSONObject("data").getJSONObject("accessToken").getString("secret");
+
+        user.setAccessToken(accessToken);
+        user.setAccessSecret(accessSecret);
 
         return response;
     }
 
-    public ResponseEntity<String> querySelf() throws Exception {
+    public static ResponseEntity<String> querySelf(User user) throws Exception {
         String url = "http://localhost:80/user/querySelf";
-        HttpHeaders headers = getHttpHeaders(accessToken, accessSecret);
+        HttpHeaders headers = getHttpHeaders(user.getAccessToken(), user.getAccessSecret());
         Map<String, String> map = new HashMap<>();
         HttpEntity<Map<String, String>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
@@ -269,14 +227,14 @@ public class UserClient {
         return response;
     }
 
-    public ResponseEntity<String> modifySelf(String nickName,
+    public static ResponseEntity<String> modifySelf(User user, String nickName,
                                  String avatar,
                                  String avatarThumb,
                                  String sex,
                                  String level,
                                  String signature) throws Exception {
         String url = "http://localhost:80/user/modifySelf";
-        HttpHeaders headers = getHttpHeaders(accessToken, accessSecret);
+        HttpHeaders headers = getHttpHeaders(user.getAccessToken(), user.getAccessSecret());
         Map<String, String> map = new HashMap<>();
         map.put("nickName", nickName);
         map.put("avatar", avatar);
@@ -301,9 +259,9 @@ public class UserClient {
         return response;
     }
 
-    public ResponseEntity<String> query(String account) throws Exception {
+    public static ResponseEntity<String> query(User user, String account) throws Exception {
         String url = "http://localhost:80/user/query";
-        HttpHeaders headers = getHttpHeaders(accessToken, accessSecret);
+        HttpHeaders headers = getHttpHeaders(user.getAccessToken(), user.getAccessSecret());
         Map<String, String> map = new HashMap<>();
         map.put("account", account);
         HttpEntity<Map<String, String>> request = new HttpEntity<>(map, headers);
@@ -323,9 +281,9 @@ public class UserClient {
         return response;
     }
 
-    public ResponseEntity<String> findByNick(String nickNameKeyWords) throws Exception {
+    public static ResponseEntity<String> findByNick(User user, String nickNameKeyWords) throws Exception {
         String url = "http://localhost:80/user/findByNick";
-        HttpHeaders headers = getHttpHeaders(accessToken, accessSecret);
+        HttpHeaders headers = getHttpHeaders(user.getAccessToken(), user.getAccessSecret());
         Map<String, String> map = new HashMap<>();
         map.put("nickNameKeyWords", nickNameKeyWords);
         HttpEntity<Map<String, String>> request = new HttpEntity<>(map, headers);
@@ -345,7 +303,7 @@ public class UserClient {
         return response;
     }
 
-    private HttpHeaders getHttpHeadersForRefresh(String token, String signKey) {
+    private static HttpHeaders getHttpHeadersForRefresh(String token, String signKey) {
         HttpHeaders headers = new HttpHeaders();
         String traceId = UUID.randomUUID().toString();
         String timestamp = String.valueOf(Instant.now().getEpochSecond());
@@ -357,7 +315,7 @@ public class UserClient {
         return headers;
     }
 
-    private HttpHeaders getHttpHeaders(String token, String signKey) {
+    private static HttpHeaders getHttpHeaders(String token, String signKey) {
         HttpHeaders headers = new HttpHeaders();
         String traceId = UUID.randomUUID().toString();
         String timestamp = String.valueOf(Instant.now().getEpochSecond());

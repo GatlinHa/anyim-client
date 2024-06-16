@@ -1,5 +1,6 @@
 package groupmng.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.GroupMngClient;
 import com.hibob.anyim.client.UserClient;
@@ -14,13 +15,11 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
 @Slf4j
-public class CreateGroupTest {
+public class DelGroupTest {
 
     private static Group group01 = new Group(
             null,
@@ -28,7 +27,7 @@ public class CreateGroupTest {
             "test_group_01",
             "暂无公告",
             "test_avatar_01",
-            null
+            new ArrayList<>()
     );
 
     private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
@@ -51,52 +50,59 @@ public class CreateGroupTest {
             UserClient.register(user04);
         }
         UserClient.login(user01);
-        group01.setUserLocal(user01);
-        List<Map<String, Object>> members = new ArrayList<>();
-        members.add(new HashMap<String, Object>(){{
-            put("memberAccount", user01.getAccount());
-            put("memberRole", 3);
+        UserClient.login(user02);
+        UserClient.login(user03);
+        UserClient.login(user04);
+    }
+
+    private static void addMember(Group group, User user, int role) {
+        group.getMembers().add(new HashMap<String, Object>(){{
+            put("memberAccount", user.getAccount());
+            put("memberRole", role);
         }});
-        members.add(new HashMap<String, Object>(){{
-            put("memberAccount", user02.getAccount());
-            put("memberRole", 0);
-        }});
-        members.add(new HashMap<String, Object>(){{
-            put("memberAccount", user03.getAccount());
-            put("memberRole", 0);
-        }});
-        members.add(new HashMap<String, Object>(){{
-            put("memberAccount", user04.getAccount());
-            put("memberRole", 0);
-        }});
-        group01.setMembers(members);
     }
 
     @Test
     public void test01() throws Exception {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
-        ResponseEntity<String> response = GroupMngClient.createGroup(group01);
-        assertTrue(JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONArray("members").size() == 4);
+        group01.setUserLocal(user01);
+        addMember(group01, user01, 3);
+        addMember(group01, user02, 0);
+        addMember(group01, user03, 0);
 
-        UserClient.login(user02);
-        UserClient.deregister(user02);
-        response = GroupMngClient.createGroup(group01);
-        assertTrue(JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONArray("members").size() == 3);
+        ResponseEntity<String> response_group01 = GroupMngClient.createGroup(group01);
+        Long groupId = JSONObject.parseObject(response_group01.getBody()).getJSONObject("data").getJSONObject("groupInfo").getLong("groupId");
+        assertTrue(groupId > 0);
 
-        UserClient.login(user03);
-        UserClient.deregister(user03);
-        response = GroupMngClient.createGroup(group01);
-        assertTrue(Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 501);
+        // user02不是群主，不能删除
+        ResponseEntity<String> response = GroupMngClient.delGroup(user02, groupId);
+        assertTrue(Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 504);
 
-        UserClient.login(user04);
-        UserClient.deregister(user04);
-        response = GroupMngClient.createGroup(group01);
-        assertTrue(Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 501);
+        // user04不是群成员，不能删除
+        response = GroupMngClient.delGroup(user04, groupId);
+        assertTrue(Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 504);
 
+        // user01是群主，可以删除
+        response = GroupMngClient.delGroup(user01, groupId);
+        assertTrue(Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 0);
+
+        // 删除后查询不到群组
+        response = GroupMngClient.queryGroupInfo(group01);
+        assertTrue(JSONObject.parseObject(response.getBody()).getJSONArray("data") == null);
     }
 
     @After
     public void afterTest() throws Exception {
+        //删除这个用户创建的群组
+        ResponseEntity<String> response = GroupMngClient.queryGroupList(user01);
+        JSONArray array = JSONObject.parseObject(response.getBody()).getJSONArray("data");
+
+        for (Object o : array) {
+            JSONObject group = (JSONObject) o;
+            Long groupId = group.getLong("groupId");
+            GroupMngClient.delGroup(user01, groupId);
+        }
+
         if (UserClient.validateAccount(user01)) {
             UserClient.login(user01);
             UserClient.deregister(user01);
@@ -113,7 +119,7 @@ public class CreateGroupTest {
             UserClient.login(user04);
             UserClient.deregister(user04);
         }
-        //TODO 删除这个用户创建的群组
+
     }
 
 }

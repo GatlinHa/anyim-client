@@ -2,6 +2,7 @@ package user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class LogoutTest {
 
-    private static final UserClient user01 = new UserClient(
+    private static final User user01 = new User(
             "account_test01",
             "clientId_test01",
             "avatar_test01",
@@ -26,9 +27,9 @@ public class LogoutTest {
 
     @Before
     public void beforeTest() throws Exception {
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
     }
 
@@ -39,11 +40,11 @@ public class LogoutTest {
     @Test
     public void test01() throws Exception {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
-        user01.register();
-        user01.login();
-        ResponseEntity<String> response1 = user01.logout();
-        ResponseEntity<String> response2 = user01.logout();
-        ResponseEntity<String> response3 = user01.querySelf();
+        UserClient.register(user01);
+        UserClient.login(user01);
+        ResponseEntity<String> response1 = UserClient.logout(user01);
+        ResponseEntity<String> response2 = UserClient.logout(user01);
+        ResponseEntity<String> response3 = UserClient.querySelf(user01);
 
         assertTrue(Integer.valueOf(JSONObject.parseObject(response1.getBody()).getString("code")) == 0);
         assertTrue(response2.getStatusCode() == HttpStatus.UNAUTHORIZED);
@@ -52,9 +53,9 @@ public class LogoutTest {
 
     @After
     public void afterTest() throws Exception {
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
     }
 

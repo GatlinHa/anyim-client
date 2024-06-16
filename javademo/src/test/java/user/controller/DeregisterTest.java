@@ -2,6 +2,7 @@ package user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class DeregisterTest {
 
-    private static UserClient user01 = new UserClient(
+    private static User user01 = new User(
             "account_test01",
             "clientId_test01",
             "avatar_test01",
@@ -26,9 +27,9 @@ public class DeregisterTest {
 
     @Before
     public void beforeTest() throws Exception {
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
     }
 
@@ -39,12 +40,12 @@ public class DeregisterTest {
     @Test
     public void test01() throws Exception {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
-        user01.register();
-        ResponseEntity<String> response1 = user01.deregister();
-        user01.login();
-        ResponseEntity<String> response2 = user01.deregister();
-        Boolean validated = user01.validateAccount();
-        ResponseEntity<String> response3 = user01.deregister();
+        UserClient.register(user01);
+        ResponseEntity<String> response1 = UserClient.deregister(user01);
+        UserClient.login(user01);
+        ResponseEntity<String> response2 = UserClient.deregister(user01);
+        Boolean validated = UserClient.validateAccount(user01);
+        ResponseEntity<String> response3 = UserClient.deregister(user01);
 
 
         assertTrue(response1.getStatusCode() == HttpStatus.UNAUTHORIZED);
@@ -55,9 +56,9 @@ public class DeregisterTest {
 
     @After
     public void afterTest() throws Exception {
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
     }
 

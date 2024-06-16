@@ -2,6 +2,7 @@ package user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 public class RegisterTest {
 
-    private static final UserClient user01 = new UserClient(
+    private static final User user01 = new User(
             "account_test01",
             "clientId_test01",
             "avatar_test01",
@@ -27,9 +28,9 @@ public class RegisterTest {
 
     @Before
     public void beforeTest() throws Exception {
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
     }
 
@@ -41,8 +42,8 @@ public class RegisterTest {
     @Test
     public void test01() throws Exception {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
-        ResponseEntity<String> register1 = user01.register();
-        ResponseEntity<String> register2 = user01.register();
+        ResponseEntity<String> register1 = UserClient.register(user01);
+        ResponseEntity<String> register2 = UserClient.register(user01);
         int code1 = Integer.valueOf(JSONObject.parseObject(register1.getBody()).getString("code"));
         int code2 = Integer.valueOf(JSONObject.parseObject(register2.getBody()).getString("code"));
 
@@ -52,9 +53,9 @@ public class RegisterTest {
 
     @After
     public void afterTest() throws Exception {
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
     }
 

@@ -6,6 +6,7 @@ import com.hibob.anyim.client.ChatClient;
 import com.hibob.anyim.client.NettyClient;
 import com.hibob.anyim.client.UserClient;
 import com.hibob.anyim.consts.Users;
+import com.hibob.anyim.entity.User;
 import com.hibob.anyim.netty.protobuf.MsgType;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -21,21 +22,21 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class PullChatMsgTest {
 
-    private static UserClient user01 = Users.ACCOUNT_01_CLIENTID_01;
-    private static UserClient user02 = Users.ACCOUNT_02_CLIENTID_01;
+    private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
+    private static User user02 = Users.ACCOUNT_02_CLIENTID_01;
 
     private static ChatClient chatClient = new ChatClient(Users.ACCOUNT_01_CLIENTID_01, Users.ACCOUNT_02_CLIENTID_01);
 
 
     @Before
     public void beforeTest() throws Exception {
-        if (!user01.validateAccount()) {
-            user01.register();
+        if (!UserClient.validateAccount(user01)) {
+            UserClient.register(user01);
         }
-        user01.login();
+        UserClient.login(user01);
 
-        if (!user02.validateAccount()) {
-            user02.register();
+        if (!UserClient.validateAccount(user02)) {
+            UserClient.register(user02);
         }
     }
 

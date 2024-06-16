@@ -2,6 +2,7 @@ package user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class LoginTest {
 
-    private static UserClient user01 = new UserClient(
+    private static User user01 = new User(
             "account_test01",
             "clientId_test01",
             "avatar_test01",
@@ -23,14 +24,14 @@ public class LoginTest {
             "password_test01",
             "phoneNum_test01"
     );
-    private static UserClient user01_errorPwd = new UserClient(user01);
+    private static User user01_errorPwd = new User(user01);
 
     @Before
     public void beforeTest() throws Exception {
         user01_errorPwd.setPassword("error_password");
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
     }
 
@@ -42,11 +43,11 @@ public class LoginTest {
     public void test01() throws Exception {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        ResponseEntity<String> response1 = user01.login();
-        ResponseEntity<String> response2 = user01.register();
-        ResponseEntity<String> response3 = user01_errorPwd.login();
-        ResponseEntity<String> response4 = user01.login();
-        ResponseEntity<String> response5 = user01.login();
+        ResponseEntity<String> response1 = UserClient.login(user01);
+        ResponseEntity<String> response2 = UserClient.register(user01);
+        ResponseEntity<String> response3 = UserClient.login(user01_errorPwd);
+        ResponseEntity<String> response4 = UserClient.login(user01);
+        ResponseEntity<String> response5 = UserClient.login(user01);
 
         assertTrue(response1.getStatusCode() == HttpStatus.UNAUTHORIZED);
         assertTrue(response3.getStatusCode() == HttpStatus.UNAUTHORIZED);
@@ -56,9 +57,9 @@ public class LoginTest {
 
     @After
     public void afterTest() throws Exception {
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
     }
 

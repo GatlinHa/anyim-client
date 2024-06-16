@@ -1,9 +1,9 @@
 package com.hibob.anyim.consts;
 
-import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.entity.User;
 
 public class Users {
-    public static final UserClient ACCOUNT_01_CLIENTID_01 = new UserClient(
+    public static final User ACCOUNT_01_CLIENTID_01 = new User(
             "test_account_01",
             "test_clientId_01",
             "test_avatar_01",
@@ -13,7 +13,7 @@ public class Users {
             "test_phoneNum_01"
     );
 
-    public static final UserClient ACCOUNT_01_CLIENTID_02 = new UserClient(
+    public static final User ACCOUNT_01_CLIENTID_02 = new User(
             "test_account_01",
             "test_clientId_02",
             "test_avatar_01",
@@ -23,7 +23,7 @@ public class Users {
             "test_phoneNum_01"
     );
 
-    public static final UserClient ACCOUNT_02_CLIENTID_01 = new UserClient(
+    public static final User ACCOUNT_02_CLIENTID_01 = new User(
             "test_account_02",
             "test_clientId_01",
             "test_avatar_02",
@@ -33,7 +33,7 @@ public class Users {
             "test_phoneNum_02"
     );
 
-    public static final UserClient ACCOUNT_02_CLIENTID_02 = new UserClient(
+    public static final User ACCOUNT_02_CLIENTID_02 = new User(
             "test_account_02",
             "test_clientId_02",
             "test_avatar_02",
@@ -43,7 +43,7 @@ public class Users {
             "test_phoneNum_02"
     );
 
-    public static final UserClient ACCOUNT_03_CLIENTID_01 = new UserClient(
+    public static final User ACCOUNT_03_CLIENTID_01 = new User(
             "test_account_03",
             "test_clientId_01",
             "test_avatar_03",
@@ -53,7 +53,7 @@ public class Users {
             "test_phoneNum_03"
     );
 
-    public static final UserClient ACCOUNT_03_CLIENTID_02 = new UserClient(
+    public static final User ACCOUNT_03_CLIENTID_02 = new User(
             "test_account_03",
             "test_clientId_02",
             "test_avatar_03",
@@ -63,7 +63,7 @@ public class Users {
             "test_phoneNum_03"
     );
 
-    public static final UserClient ACCOUNT_04_CLIENTID_01 = new UserClient(
+    public static final User ACCOUNT_04_CLIENTID_01 = new User(
             "test_account_04",
             "test_clientId_01",
             "test_avatar_04",
@@ -73,7 +73,7 @@ public class Users {
             "test_phoneNum_04"
     );
 
-    public static final UserClient ACCOUNT_04_CLIENTID_02 = new UserClient(
+    public static final User ACCOUNT_04_CLIENTID_02 = new User(
             "test_account_04",
             "test_clientId_02",
             "test_avatar_04",

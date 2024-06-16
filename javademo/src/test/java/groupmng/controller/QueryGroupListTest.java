@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.GroupMngClient;
 import com.hibob.anyim.client.UserClient;
 import com.hibob.anyim.consts.Users;
+import com.hibob.anyim.entity.Group;
+import com.hibob.anyim.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class QueryGroupListTest {
 
-    private static GroupMngClient group01 = new GroupMngClient(
+    private static Group group01 = new Group(
             null,
             0,
             "test_group_01",
@@ -27,7 +29,7 @@ public class QueryGroupListTest {
             new ArrayList<>()
     );
 
-    private static GroupMngClient group02 = new GroupMngClient(
+    private static Group group02 = new Group(
             null,
             0,
             "test_group_02",
@@ -36,7 +38,7 @@ public class QueryGroupListTest {
             new ArrayList<>()
     );
 
-    private static GroupMngClient group03 = new GroupMngClient(
+    private static Group group03 = new Group(
             null,
             0,
             "test_group_03",
@@ -45,32 +47,32 @@ public class QueryGroupListTest {
             new ArrayList<>()
     );
 
-    private static UserClient user01 = Users.ACCOUNT_01_CLIENTID_01;
-    private static UserClient user02 = Users.ACCOUNT_02_CLIENTID_01;
-    private static UserClient user03 = Users.ACCOUNT_03_CLIENTID_01;
-    private static UserClient user04 = Users.ACCOUNT_04_CLIENTID_01;
+    private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
+    private static User user02 = Users.ACCOUNT_02_CLIENTID_01;
+    private static User user03 = Users.ACCOUNT_03_CLIENTID_01;
+    private static User user04 = Users.ACCOUNT_04_CLIENTID_01;
 
     @Before
     public void beforeTest() throws Exception {
-        if (!user01.validateAccount()) {
-            user01.register();
+        if (!UserClient.validateAccount(user01)) {
+            UserClient.register(user01);
         }
-        if (!user02.validateAccount()) {
-            user02.register();
+        if (!UserClient.validateAccount(user02)) {
+            UserClient.register(user02);
         }
-        if (!user03.validateAccount()) {
-            user03.register();
+        if (!UserClient.validateAccount(user03)) {
+            UserClient.register(user03);
         }
-        if (!user04.validateAccount()) {
-            user04.register();
+        if (!UserClient.validateAccount(user04)) {
+            UserClient.register(user04);
         }
-        user01.login();
+        UserClient.login(user01);
     }
 
-    private static void addMember(GroupMngClient group, UserClient user, int role) {
+    private static void addMember(Group group, User user, int role) {
         group.getMembers().add(new HashMap<String, Object>(){{
-            put("memberAccount", user01.getAccount());
-            put("memberRole", 3);
+            put("memberAccount", user.getAccount());
+            put("memberRole", role);
         }});
     }
 
@@ -92,41 +94,33 @@ public class QueryGroupListTest {
         addMember(group03, user03, 0);
         addMember(group03, user04, 0);
 
+        GroupMngClient.createGroup(group01);
+        GroupMngClient.createGroup(group02);
+        GroupMngClient.createGroup(group03);
 
-        group01.createGroup();
-        group02.createGroup();
-        group03.createGroup();
+        ResponseEntity<String> response = GroupMngClient.queryGroupList(user01);
 
-        ResponseEntity<String> response = group01.queryGroupList();
+        assertTrue(JSONObject.parseObject(response.getBody()).getJSONArray("data").size() == 3);
 
-        Long groupId = JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONObject("groupInfo").getLong("groupId");
-        group01.setGroupId(groupId);
-
-        response = group01.queryGroupInfo();
-        assertTrue(JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONArray("members").size() == 3);
-
-        group01.setUserLocal(user04);
-        response = group01.queryGroupInfo();
-        assertTrue(Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 502);
     }
 
     @After
     public void afterTest() throws Exception {
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
-        if (user02.validateAccount()) {
-            user02.login();
-            user02.deregister();
+        if (UserClient.validateAccount(user02)) {
+            UserClient.login(user02);
+            UserClient.deregister(user02);
         }
-        if (user03.validateAccount()) {
-            user03.login();
-            user03.deregister();
+        if (UserClient.validateAccount(user03)) {
+            UserClient.login(user03);
+            UserClient.deregister(user03);
         }
-        if (user04.validateAccount()) {
-            user04.login();
-            user04.deregister();
+        if (UserClient.validateAccount(user04)) {
+            UserClient.login(user04);
+            UserClient.deregister(user04);
         }
         //TODO 删除这个用户创建的群组
     }

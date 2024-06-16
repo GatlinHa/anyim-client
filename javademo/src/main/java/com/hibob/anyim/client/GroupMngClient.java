@@ -1,6 +1,9 @@
 package com.hibob.anyim.client;
 
+import com.hibob.anyim.entity.Group;
+import com.hibob.anyim.entity.User;
 import com.hibob.anyim.utils.JwtUtil;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -10,58 +13,25 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @Data
 @Slf4j
+@AllArgsConstructor
 public class GroupMngClient {
 
-    private UserClient userLocal;
+    private static final RestTemplate restTemplate = new RestTemplate();
 
-    private long groupId;
-    private int groupType;
-    private String groupName;
-    private String announcement;
-    private String avatar;
-    private List<Map<String, Object>> members;
-
-    public GroupMngClient(UserClient userLocal,
-                          int groupType,
-                          String groupName,
-                          String announcement,
-                          String avatar,
-                          List<Map<String, Object>> members) {
-        this.userLocal = userLocal;
-        this.groupType = groupType;
-        this.groupName = groupName;
-        this.announcement = announcement;
-        this.avatar = avatar;
-        this.members = members;
-    }
-
-    public GroupMngClient(GroupMngClient groupMngClient) {
-        this.groupId = groupMngClient.getGroupId();
-        this.userLocal = groupMngClient.getUserLocal();
-        this.groupType = groupMngClient.getGroupType();
-        this.groupName = groupMngClient.groupName;
-        this.announcement = groupMngClient.getAnnouncement();
-        this.avatar = groupMngClient.getAvatar();
-        this.members = groupMngClient.getMembers();
-    }
-
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    public ResponseEntity<String> createGroup() throws Exception {
+    public static ResponseEntity<String> createGroup(Group group) throws Exception {
         String url = "http://localhost:80/groupmng/createGroup";
-        HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
+        HttpHeaders headers = getHttpHeaders(group.getUserLocal().getAccessToken(), group.getUserLocal().getAccessSecret());
         Map<String, Object> map = new HashMap<>();
-        map.put("groupType", groupType);
-        map.put("groupName", groupName);
-        map.put("announcement", announcement);
-        map.put("avatar", avatar);
-        map.put("members", members);
+        map.put("groupType", group.getGroupType());
+        map.put("groupName", group.getGroupName());
+        map.put("announcement", group.getAnnouncement());
+        map.put("avatar", group.getAvatar());
+        map.put("members", group.getMembers());
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
         try {
@@ -78,9 +48,50 @@ public class GroupMngClient {
         return response;
     }
 
-    public ResponseEntity<String> queryGroupInfo() throws Exception {
+    public static ResponseEntity<String> queryGroupInfo(Group group) throws Exception {
         String url = "http://localhost:80/groupmng/queryGroupInfo";
-        HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
+        HttpHeaders headers = getHttpHeaders(group.getUserLocal().getAccessToken(), group.getUserLocal().getAccessSecret());
+        Map<String, Object> map = new HashMap<>();
+        map.put("groupId", group.getGroupId());
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(
+                    new URI(url),
+                    HttpMethod.POST,
+                    request,
+                    String.class);
+        }
+        catch (HttpClientErrorException.Unauthorized e) {
+            response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return response;
+        }
+        return response;
+    }
+
+    public static ResponseEntity<String> queryGroupList(User user) throws Exception {
+        String url = "http://localhost:80/groupmng/queryGroupList";
+        HttpHeaders headers = getHttpHeaders(user.getAccessToken(), user.getAccessSecret());
+        Map<String, Object> map = new HashMap<>();
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(
+                    new URI(url),
+                    HttpMethod.POST,
+                    request,
+                    String.class);
+        }
+        catch (HttpClientErrorException.Unauthorized e) {
+            response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return response;
+        }
+        return response;
+    }
+
+    public static ResponseEntity<String> delGroup(User user, long groupId) throws Exception {
+        String url = "http://localhost:80/groupmng/delGroup";
+        HttpHeaders headers = getHttpHeaders(user.getAccessToken(), user.getAccessSecret());
         Map<String, Object> map = new HashMap<>();
         map.put("groupId", groupId);
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
@@ -99,27 +110,7 @@ public class GroupMngClient {
         return response;
     }
 
-    public ResponseEntity<String> queryGroupList() throws Exception {
-        String url = "http://localhost:80/groupmng/queryGroupList";
-        HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
-        Map<String, Object> map = new HashMap<>();
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
-        ResponseEntity<String> response;
-        try {
-            response = restTemplate.exchange(
-                    new URI(url),
-                    HttpMethod.POST,
-                    request,
-                    String.class);
-        }
-        catch (HttpClientErrorException.Unauthorized e) {
-            response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            return response;
-        }
-        return response;
-    }
-
-    private HttpHeaders getHttpHeaders(String token, String signKey) {
+    private static HttpHeaders getHttpHeaders(String token, String signKey) {
         HttpHeaders headers = new HttpHeaders();
         String traceId = UUID.randomUUID().toString();
         String timestamp = String.valueOf(Instant.now().getEpochSecond());

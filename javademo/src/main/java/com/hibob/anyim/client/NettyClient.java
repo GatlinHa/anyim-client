@@ -1,6 +1,7 @@
 package com.hibob.anyim.client;
 
 import com.hibob.anyim.consts.Const;
+import com.hibob.anyim.entity.User;
 import com.hibob.anyim.handler.ByteBufToWebSocketFrame;
 import com.hibob.anyim.handler.ClientHandler;
 import com.hibob.anyim.handler.WebSocketToByteBufEncoder;
@@ -36,19 +37,19 @@ import java.util.UUID;
 @Slf4j
 public class NettyClient {
 
-    private UserClient userClient;
+    private User user;
     private String nettyPort;
     private NioEventLoopGroup group;
     private Bootstrap bootstrap;
     private Channel channel;
 
-    public NettyClient(UserClient userClient, String nettyPort) {
-        this.userClient = userClient;
+    public NettyClient(User user, String nettyPort) {
+        this.user = user;
         this.nettyPort = nettyPort;
     }
 
-    public NettyClient(UserClient userClient) {
-        this.userClient = userClient;
+    public NettyClient(User user) {
+        this.user = user;
         this.nettyPort = "80";
     }
 
@@ -58,9 +59,9 @@ public class NettyClient {
         bootstrap = new Bootstrap();
         URI uri = new URI("ws://localhost:" + nettyPort + "/ws");
         DefaultHttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaderNames.AUTHORIZATION, userClient.getAccessToken());
-        headers.add("account", userClient.getAccount());
-        headers.add("clientId", userClient.getClientId());
+        headers.add(HttpHeaderNames.AUTHORIZATION, user.getAccessToken());
+        headers.add("account", user.getAccount());
+        headers.add("clientId", user.getClientId());
         try {
             bootstrap
                     .group(group)
@@ -158,8 +159,8 @@ public class NettyClient {
                 .setIsExtension(false)
                 .build();
         Body body = Body.newBuilder()
-                .setFromId(userClient.getAccount())
-                .setFromClient(userClient.getClientId())
+                .setFromId(user.getAccount())
+                .setFromClient(user.getClientId())
                 .setToId(toId)
                 .setSeq(1)
                 .setAck(1)

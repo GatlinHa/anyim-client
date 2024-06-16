@@ -1,5 +1,6 @@
 package com.hibob.anyim.client;
 
+import com.hibob.anyim.entity.User;
 import com.hibob.anyim.utils.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,17 +22,17 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ChatClient {
 
-    private UserClient userClientLocal;
-    private UserClient userClientPeer;
+    private User userLocal;
+    private User userPeer;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
     public ResponseEntity<String> pullMsg(long lastMsgId, long lastPullTime, int pageSize) throws Exception {
-        userClientLocal.login();
+        UserClient.login(userLocal);
         String url = "http://localhost:80/chat/pullMsg";
-        HttpHeaders headers = getHttpHeaders(userClientLocal.getAccessToken(), userClientLocal.getAccessSecret());
+        HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
         Map<String, Object> map = new HashMap<>();
-        map.put("toAccount", userClientPeer.getAccount());
+        map.put("toAccount", userPeer.getAccount());
         map.put("lastMsgId", lastMsgId);
         map.put("lastPullTime", lastPullTime);
         map.put("pageSize", pageSize);
@@ -46,11 +47,11 @@ public class ChatClient {
     }
 
     public ResponseEntity<String> history(long startTime, long endTime, long lastMsgId, int pageSize) throws Exception {
-        userClientLocal.login();
+        UserClient.login(userLocal);
         String url = "http://localhost:80/chat/history";
-        HttpHeaders headers = getHttpHeaders(userClientLocal.getAccessToken(), userClientLocal.getAccessSecret());
+        HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
         Map<String, Object> map = new HashMap<>();
-        map.put("toAccount", userClientPeer.getAccount());
+        map.put("toAccount", userPeer.getAccount());
         map.put("startTime", startTime);
         map.put("endTime", endTime);
         map.put("lastMsgId", lastMsgId);

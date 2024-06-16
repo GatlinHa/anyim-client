@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.NettyClient;
 import com.hibob.anyim.client.UserClient;
 import com.hibob.anyim.consts.Users;
+import com.hibob.anyim.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 
 @Slf4j
 public class ClientMain {
-    private static final Map<String, UserClient> startupCmdMap = new HashMap<>();
+    private static final Map<String, User> startupCmdMap = new HashMap<>();
 
     private static String token ="";
     private static String signKey ="";
@@ -25,20 +26,20 @@ public class ClientMain {
         startupCmdMap.put("22", Users.ACCOUNT_02_CLIENTID_02);
     }
 
-    public static void register(UserClient userClient) throws Exception {
-        userClient.register();
+    public static void register(User user) throws Exception {
+        UserClient.register(user);
     }
 
-    public static void login(UserClient userClient) throws Exception {
-        ResponseEntity<String> response = userClient.login();
+    public static void login(User user) throws Exception {
+        ResponseEntity<String> response = UserClient.login(user);
         JSONObject login = JSONObject.parseObject(response.getBody());
         token = login.getJSONObject("data").getJSONObject("accessToken").getString("token");
         signKey = login.getJSONObject("data").getJSONObject("accessToken").getString("secret");
     }
 
-    private static void clearUser(UserClient userClient) throws Exception {
-        userClient.login();
-        userClient.deregister();
+    private static void clearUser(User user) throws Exception {
+        UserClient.login(user);
+        UserClient.deregister(user);
     }
 
     /**
@@ -47,12 +48,12 @@ public class ClientMain {
      * @throws URISyntaxException
      */
     public static void main(String[] args) throws Exception {
-        UserClient userClient = startupCmdMap.get(args[0]);
-        if (!userClient.validateAccount()) {
-            userClient.register();
+        User user = startupCmdMap.get(args[0]);
+        if (!UserClient.validateAccount(user)) {
+            UserClient.register(user);
         }
-        userClient.login();
-        NettyClient nettyClient = new NettyClient(userClient, args[1]);
+        UserClient.login(user);
+        NettyClient nettyClient = new NettyClient(user, args[1]);
         nettyClient.start();
         nettyClient.scannerIn();
     }

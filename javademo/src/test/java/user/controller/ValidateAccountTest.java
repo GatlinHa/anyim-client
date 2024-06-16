@@ -1,6 +1,7 @@
 package user.controller;
 
 import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class ValidateAccountTest {
 
-    private static UserClient user01 = new UserClient(
+    private static User user01 = new User(
             "account_test01",
             "clientId_test01",
             "avatar_test01",
@@ -23,9 +24,9 @@ public class ValidateAccountTest {
 
     @Before
     public void beforeTest() throws Exception {
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
     }
 
@@ -36,9 +37,9 @@ public class ValidateAccountTest {
     @Test
     public void test01() throws Exception {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
-        Boolean result1 = user01.validateAccount();
-        user01.register();
-        Boolean result2 = user01.validateAccount();
+        Boolean result1 = UserClient.validateAccount(user01);
+        UserClient.register(user01);
+        Boolean result2 = UserClient.validateAccount(user01);
 
         assertTrue(result1 == false);
         assertTrue(result2 == true);
@@ -46,9 +47,9 @@ public class ValidateAccountTest {
 
     @After
     public void afterTest() throws Exception {
-        if (user01.validateAccount()) {
-            user01.login();
-            user01.deregister();
+        if (UserClient.validateAccount(user01)) {
+            UserClient.login(user01);
+            UserClient.deregister(user01);
         }
     }
 }
