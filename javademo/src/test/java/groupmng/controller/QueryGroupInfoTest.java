@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.junit.Assert.assertTrue;
 
 @Slf4j
-public class QueryGroupTest {
+public class QueryGroupInfoTest {
 
     private static GroupClient group01 = new GroupClient(
             null,
@@ -75,11 +75,11 @@ public class QueryGroupTest {
         Long groupId = JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONObject("groupInfo").getLong("groupId");
         group01.setGroupId(groupId);
 
-        response = group01.queryGroup();
+        response = group01.queryGroupInfo();
         assertTrue(JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONArray("members").size() == 3);
 
         group01.setUserLocal(user04);
-        response = group01.queryGroup();
+        response = group01.queryGroupInfo();
         assertTrue(Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 502);
     }
 

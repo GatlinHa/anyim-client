@@ -78,8 +78,8 @@ public class GroupClient {
         return response;
     }
 
-    public ResponseEntity<String> queryGroup() throws Exception {
-        String url = "http://localhost:80/groupmng/queryGroup";
+    public ResponseEntity<String> queryGroupInfo() throws Exception {
+        String url = "http://localhost:80/groupmng/queryGroupInfo";
         HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
         Map<String, Object> map = new HashMap<>();
         map.put("groupId", groupId);
