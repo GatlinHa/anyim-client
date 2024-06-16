@@ -96,11 +96,12 @@ public class DelGroupTest {
         //删除这个用户创建的群组
         ResponseEntity<String> response = GroupMngClient.queryGroupList(user01);
         JSONArray array = JSONObject.parseObject(response.getBody()).getJSONArray("data");
-
-        for (Object o : array) {
-            JSONObject group = (JSONObject) o;
-            Long groupId = group.getLong("groupId");
-            GroupMngClient.delGroup(user01, groupId);
+        if (array != null && !array.isEmpty()) {
+            for (Object o : array) {
+                JSONObject group = (JSONObject) o;
+                Long groupId = group.getLong("groupId");
+                GroupMngClient.delGroup(user01, groupId);
+            }
         }
 
         if (UserClient.validateAccount(user01)) {

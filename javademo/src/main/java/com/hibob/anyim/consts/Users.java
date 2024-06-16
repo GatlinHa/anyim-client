@@ -82,4 +82,24 @@ public class Users {
             "123456",
             "test_phoneNum_04"
     );
+
+    public static final User ACCOUNT_05_CLIENTID_01 = new User(
+            "test_account_05",
+            "test_clientId_01",
+            "test_avatar_05",
+            "test_inviteCode_05",
+            "test_nickName_05",
+            "123456",
+            "test_phoneNum_05"
+    );
+
+    public static final User ACCOUNT_05_CLIENTID_02 = new User(
+            "test_account_05",
+            "test_clientId_02",
+            "test_avatar_05",
+            "test_inviteCode_05",
+            "test_nickName_05",
+            "123456",
+            "test_phoneNum_05"
+    );
 }
