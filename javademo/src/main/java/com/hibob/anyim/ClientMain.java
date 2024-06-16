@@ -1,9 +1,9 @@
-package com.hibob.anyim.client;
+package com.hibob.anyim;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hibob.anyim.client.client.NettyClient;
-import com.hibob.anyim.client.client.UserClient;
-import com.hibob.anyim.client.consts.Users;
+import com.hibob.anyim.client.NettyClient;
+import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.consts.Users;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 

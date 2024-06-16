@@ -1,14 +1,14 @@
 package user.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hibob.anyim.client.client.UserClient;
+import com.hibob.anyim.client.UserClient;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
-import static com.hibob.anyim.client.enums.ServiceErrorCode.ERROR_ACCOUNT_EXIST;
+import static com.hibob.anyim.enums.ServiceErrorCode.ERROR_ACCOUNT_EXIST;
 import static org.junit.Assert.assertTrue;
 
 @Slf4j

@@ -1,6 +1,6 @@
-package com.hibob.anyim.client.consts;
+package com.hibob.anyim.consts;
 
-import com.hibob.anyim.client.client.UserClient;
+import com.hibob.anyim.client.UserClient;
 
 public class Users {
     public static final UserClient ACCOUNT_01_CLIENTID_01 = new UserClient(

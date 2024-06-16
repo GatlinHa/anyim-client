@@ -1,6 +1,6 @@
-package com.hibob.anyim.client.enums;
+package com.hibob.anyim.enums;
 
-import com.hibob.anyim.client.consts.Const;
+import com.hibob.anyim.consts.Const;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

@@ -1,7 +1,7 @@
 package user.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hibob.anyim.client.client.UserClient;
+import com.hibob.anyim.client.UserClient;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;

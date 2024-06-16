@@ -1,4 +1,4 @@
-package com.hibob.anyim.client.handler;
+package com.hibob.anyim.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,7 +1,7 @@
-package com.hibob.anyim.client.client;
+package com.hibob.anyim.client;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hibob.anyim.client.utils.JwtUtil;
+import com.hibob.anyim.utils.JwtUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;

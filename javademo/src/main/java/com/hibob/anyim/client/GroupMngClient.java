@@ -1,6 +1,6 @@
-package com.hibob.anyim.client.client;
+package com.hibob.anyim.client;
 
-import com.hibob.anyim.client.utils.JwtUtil;
+import com.hibob.anyim.utils.JwtUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Data
 @Slf4j
-public class GroupClient {
+public class GroupMngClient {
 
     private UserClient userLocal;
 
@@ -27,12 +27,12 @@ public class GroupClient {
     private String avatar;
     private List<Map<String, Object>> members;
 
-    public GroupClient(UserClient userLocal,
-                       int groupType,
-                       String groupName,
-                       String announcement,
-                       String avatar,
-                       List<Map<String, Object>> members) {
+    public GroupMngClient(UserClient userLocal,
+                          int groupType,
+                          String groupName,
+                          String announcement,
+                          String avatar,
+                          List<Map<String, Object>> members) {
         this.userLocal = userLocal;
         this.groupType = groupType;
         this.groupName = groupName;
@@ -41,14 +41,14 @@ public class GroupClient {
         this.members = members;
     }
 
-    public GroupClient(GroupClient groupClient) {
-        this.groupId = groupClient.getGroupId();
-        this.userLocal = groupClient.getUserLocal();
-        this.groupType = groupClient.getGroupType();
-        this.groupName = groupClient.groupName;
-        this.announcement = groupClient.getAnnouncement();
-        this.avatar = groupClient.getAvatar();
-        this.members = groupClient.getMembers();
+    public GroupMngClient(GroupMngClient groupMngClient) {
+        this.groupId = groupMngClient.getGroupId();
+        this.userLocal = groupMngClient.getUserLocal();
+        this.groupType = groupMngClient.getGroupType();
+        this.groupName = groupMngClient.groupName;
+        this.announcement = groupMngClient.getAnnouncement();
+        this.avatar = groupMngClient.getAvatar();
+        this.members = groupMngClient.getMembers();
     }
 
     private final RestTemplate restTemplate = new RestTemplate();
@@ -83,6 +83,26 @@ public class GroupClient {
         HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
         Map<String, Object> map = new HashMap<>();
         map.put("groupId", groupId);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(
+                    new URI(url),
+                    HttpMethod.POST,
+                    request,
+                    String.class);
+        }
+        catch (HttpClientErrorException.Unauthorized e) {
+            response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return response;
+        }
+        return response;
+    }
+
+    public ResponseEntity<String> queryGroupList() throws Exception {
+        String url = "http://localhost:80/groupmng/queryGroupList";
+        HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
+        Map<String, Object> map = new HashMap<>();
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
         try {

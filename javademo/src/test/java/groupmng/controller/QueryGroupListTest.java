@@ -12,13 +12,11 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
 @Slf4j
-public class QueryGroupInfoTest {
+public class QueryGroupListTest {
 
     private static GroupMngClient group01 = new GroupMngClient(
             null,
@@ -26,7 +24,25 @@ public class QueryGroupInfoTest {
             "test_group_01",
             "暂无公告",
             "test_avatar_01",
-            null
+            new ArrayList<>()
+    );
+
+    private static GroupMngClient group02 = new GroupMngClient(
+            null,
+            0,
+            "test_group_02",
+            "暂无公告",
+            "test_avatar_02",
+            new ArrayList<>()
+    );
+
+    private static GroupMngClient group03 = new GroupMngClient(
+            null,
+            0,
+            "test_group_03",
+            "暂无公告",
+            "test_avatar_03",
+            new ArrayList<>()
     );
 
     private static UserClient user01 = Users.ACCOUNT_01_CLIENTID_01;
@@ -49,29 +65,40 @@ public class QueryGroupInfoTest {
             user04.register();
         }
         user01.login();
-        user04.login();
+    }
 
-        List<Map<String, Object>> members = new ArrayList<>();
-        members.add(new HashMap<String, Object>(){{
+    private static void addMember(GroupMngClient group, UserClient user, int role) {
+        group.getMembers().add(new HashMap<String, Object>(){{
             put("memberAccount", user01.getAccount());
             put("memberRole", 3);
         }});
-        members.add(new HashMap<String, Object>(){{
-            put("memberAccount", user02.getAccount());
-            put("memberRole", 0);
-        }});
-        members.add(new HashMap<String, Object>(){{
-            put("memberAccount", user03.getAccount());
-            put("memberRole", 0);
-        }});
-        group01.setMembers(members);
     }
 
     @Test
     public void test01() throws Exception {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
         group01.setUserLocal(user01);
-        ResponseEntity<String> response = group01.createGroup();
+        addMember(group01, user01, 3);
+        addMember(group01, user02, 0);
+        addMember(group01, user03, 0);
+
+        group02.setUserLocal(user01);
+        addMember(group02, user01, 3);
+        addMember(group02, user02, 0);
+        addMember(group02, user04, 0);
+
+        group03.setUserLocal(user01);
+        addMember(group03, user01, 3);
+        addMember(group03, user03, 0);
+        addMember(group03, user04, 0);
+
+
+        group01.createGroup();
+        group02.createGroup();
+        group03.createGroup();
+
+        ResponseEntity<String> response = group01.queryGroupList();
+
         Long groupId = JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONObject("groupInfo").getLong("groupId");
         group01.setGroupId(groupId);
 

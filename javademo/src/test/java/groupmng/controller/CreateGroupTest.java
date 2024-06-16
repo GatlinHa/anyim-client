@@ -1,9 +1,9 @@
 package groupmng.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hibob.anyim.client.client.GroupClient;
-import com.hibob.anyim.client.client.UserClient;
-import com.hibob.anyim.client.consts.Users;
+import com.hibob.anyim.client.GroupMngClient;
+import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.consts.Users;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class CreateGroupTest {
 
-    private static GroupClient group01 = new GroupClient(
+    private static GroupMngClient group01 = new GroupMngClient(
             null,
             0,
             "test_group_01",

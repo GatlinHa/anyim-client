@@ -1,4 +1,4 @@
-package com.hibob.anyim.client.utils;
+package com.hibob.anyim.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

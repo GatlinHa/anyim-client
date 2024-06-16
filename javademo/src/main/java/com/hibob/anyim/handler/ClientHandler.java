@@ -1,6 +1,6 @@
-package com.hibob.anyim.client.handler;
+package com.hibob.anyim.handler;
 
-import com.hibob.anyim.client.consts.Const;
+import com.hibob.anyim.consts.Const;
 import com.hibob.anyim.netty.protobuf.Body;
 import com.hibob.anyim.netty.protobuf.Header;
 import com.hibob.anyim.netty.protobuf.Msg;

@@ -2,10 +2,10 @@ package chat.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.hibob.anyim.client.client.ChatClient;
-import com.hibob.anyim.client.client.NettyClient;
-import com.hibob.anyim.client.client.UserClient;
-import com.hibob.anyim.client.consts.Users;
+import com.hibob.anyim.client.ChatClient;
+import com.hibob.anyim.client.NettyClient;
+import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.consts.Users;
 import com.hibob.anyim.netty.protobuf.MsgType;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;

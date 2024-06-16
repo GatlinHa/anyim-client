@@ -1,4 +1,4 @@
-package com.hibob.anyim.client.consts;
+package com.hibob.anyim.consts;
 
 public class Const {
     private Const() {

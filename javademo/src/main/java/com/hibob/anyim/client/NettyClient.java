@@ -1,9 +1,9 @@
-package com.hibob.anyim.client.client;
+package com.hibob.anyim.client;
 
-import com.hibob.anyim.client.consts.Const;
-import com.hibob.anyim.client.handler.ByteBufToWebSocketFrame;
-import com.hibob.anyim.client.handler.ClientHandler;
-import com.hibob.anyim.client.handler.WebSocketToByteBufEncoder;
+import com.hibob.anyim.consts.Const;
+import com.hibob.anyim.handler.ByteBufToWebSocketFrame;
+import com.hibob.anyim.handler.ClientHandler;
+import com.hibob.anyim.handler.WebSocketToByteBufEncoder;
 import com.hibob.anyim.netty.protobuf.Body;
 import com.hibob.anyim.netty.protobuf.Header;
 import com.hibob.anyim.netty.protobuf.Msg;
