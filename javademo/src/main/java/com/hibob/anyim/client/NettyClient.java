@@ -36,7 +36,6 @@ import java.util.UUID;
  * 启动测试前要先启动User服务
  */
 @Slf4j
-@Data
 public class NettyClient {
 
     private static User user;

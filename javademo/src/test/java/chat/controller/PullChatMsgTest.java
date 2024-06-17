@@ -25,9 +25,6 @@ public class PullChatMsgTest {
     private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
     private static User user02 = Users.ACCOUNT_02_CLIENTID_01;
 
-    private static ChatClient chatClient = new ChatClient(Users.ACCOUNT_01_CLIENTID_01, Users.ACCOUNT_02_CLIENTID_01);
-
-
     @Before
     public void beforeTest() throws Exception {
         if (!UserClient.validateAccount(user01)) {
@@ -49,7 +46,6 @@ public class PullChatMsgTest {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
 
         long lastPullTime = new Date().getTime();
-        ChatClient chatClient = new ChatClient(user01, user02);
         NettyClient.setUser(user01);
         NettyClient.start();
         String content = UUID.randomUUID().toString();
@@ -57,7 +53,7 @@ public class PullChatMsgTest {
         long lastMsgId = -1;
 
         while (true) {
-            ResponseEntity<String> response = chatClient.pullMsg(lastMsgId, lastPullTime, 10);
+            ResponseEntity<String> response = ChatClient.pullMsg(user01, user02, lastMsgId, lastPullTime, 10);
             JSONObject jsonObject = JSONObject.parseObject(response.getBody()).getJSONObject("data");
             long count = jsonObject.getLong("count");
             lastMsgId = jsonObject.getLong("lastMsgId");
@@ -92,7 +88,6 @@ public class PullChatMsgTest {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long lastPullTime = sdf.parse("2024-06-01 00:00:00").getTime();
-        ChatClient chatClient = new ChatClient(user01, user02);
         NettyClient.setUser(user01);
         NettyClient.start();
         String content = UUID.randomUUID().toString();
@@ -100,7 +95,7 @@ public class PullChatMsgTest {
         long lastMsgId = -1;
 
         while (true) {
-            ResponseEntity<String> response = chatClient.pullMsg(lastMsgId, lastPullTime, 10);
+            ResponseEntity<String> response = ChatClient.pullMsg(user01, user02, lastMsgId, lastPullTime, 10);
             JSONObject jsonObject = JSONObject.parseObject(response.getBody()).getJSONObject("data");
             long count = jsonObject.getLong("count");
             lastMsgId = jsonObject.getLong("lastMsgId");
@@ -134,7 +129,6 @@ public class PullChatMsgTest {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
 
         long lastPullTime = new Date().getTime();
-        ChatClient chatClient = new ChatClient(user01, user02);
         NettyClient.setUser(user01);
         NettyClient.start();
         String content = UUID.randomUUID().toString();
@@ -148,7 +142,7 @@ public class PullChatMsgTest {
 
         int cnt = 0;
         while (true) {
-            ResponseEntity<String> response = chatClient.pullMsg(lastMsgId, lastPullTime, 10);
+            ResponseEntity<String> response = ChatClient.pullMsg(user01, user02, lastMsgId, lastPullTime, 10);
             JSONObject jsonObject = JSONObject.parseObject(response.getBody()).getJSONObject("data");
             long count = jsonObject.getLong("count");
             lastMsgId = jsonObject.getLong("lastMsgId");

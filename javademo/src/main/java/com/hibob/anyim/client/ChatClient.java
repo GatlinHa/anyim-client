@@ -2,8 +2,6 @@ package com.hibob.anyim.client;
 
 import com.hibob.anyim.entity.User;
 import com.hibob.anyim.utils.JwtUtil;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,17 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Data
 @Slf4j
-@AllArgsConstructor
 public class ChatClient {
 
-    private User userLocal;
-    private User userPeer;
+    private static final RestTemplate restTemplate = new RestTemplate();
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    public ResponseEntity<String> pullMsg(long lastMsgId, long lastPullTime, int pageSize) throws Exception {
+    public static ResponseEntity<String> pullMsg(User userLocal, User userPeer, long lastMsgId, long lastPullTime, int pageSize) throws Exception {
         UserClient.login(userLocal);
         String url = "http://localhost:80/chat/pullMsg";
         HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
@@ -46,7 +39,7 @@ public class ChatClient {
         return response;
     }
 
-    public ResponseEntity<String> history(long startTime, long endTime, long lastMsgId, int pageSize) throws Exception {
+    public static ResponseEntity<String> history(User userLocal, User userPeer, long startTime, long endTime, long lastMsgId, int pageSize) throws Exception {
         UserClient.login(userLocal);
         String url = "http://localhost:80/chat/history";
         HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
@@ -67,7 +60,7 @@ public class ChatClient {
     }
 
 
-    private HttpHeaders getHttpHeaders(String token, String signKey) {
+    private static HttpHeaders getHttpHeaders(String token, String signKey) {
         HttpHeaders headers = new HttpHeaders();
         String traceId = UUID.randomUUID().toString();
         String timestamp = String.valueOf(Instant.now().getEpochSecond());

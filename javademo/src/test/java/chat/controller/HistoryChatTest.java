@@ -41,7 +41,6 @@ public class HistoryChatTest {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
 
         long startTime = new Date().getTime();
-        ChatClient chatClient = new ChatClient(user01, user02);
         NettyClient.setUser(user01);
         NettyClient.start();
         String content = UUID.randomUUID().toString();
@@ -50,7 +49,7 @@ public class HistoryChatTest {
         long lastMsgId = -1;
 
         while (true) {
-            ResponseEntity<String> response = chatClient.history(startTime, endTime, lastMsgId, 10);
+            ResponseEntity<String> response = ChatClient.history(user01, user02, startTime, endTime, lastMsgId, 10);
             JSONObject jsonObject = JSONObject.parseObject(response.getBody()).getJSONObject("data");
             long count = jsonObject.getLong("count");
             lastMsgId = jsonObject.getLong("lastMsgId");
@@ -84,7 +83,6 @@ public class HistoryChatTest {
         log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
 
         long startTime = new Date().getTime();
-        ChatClient chatClient = new ChatClient(user01, user02);
         NettyClient.setUser(user01);
         NettyClient.start();
         String content = UUID.randomUUID().toString();
@@ -99,7 +97,7 @@ public class HistoryChatTest {
 
         int cnt = 0;
         while (true) {
-            ResponseEntity<String> response = chatClient.history(startTime, endTime, lastMsgId, 10);
+            ResponseEntity<String> response = ChatClient.history(user01, user02, startTime, endTime, lastMsgId, 10);
             JSONObject jsonObject = JSONObject.parseObject(response.getBody()).getJSONObject("data");
             long count = jsonObject.getLong("count");
             lastMsgId = jsonObject.getLong("lastMsgId");
