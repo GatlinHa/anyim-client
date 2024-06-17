@@ -1,7 +1,6 @@
 package com.hibob.anyim.client;
 
 import com.hibob.anyim.consts.Const;
-import com.hibob.anyim.entity.Group;
 import com.hibob.anyim.entity.User;
 import com.hibob.anyim.handler.ByteBufToWebSocketFrame;
 import com.hibob.anyim.handler.ClientHandler;
@@ -24,6 +23,7 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.AttributeKey;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
@@ -36,25 +36,24 @@ import java.util.UUID;
  * 启动测试前要先启动User服务
  */
 @Slf4j
+@Data
 public class NettyClient {
 
-    private User user;
-    private String nettyPort;
-    private NioEventLoopGroup group;
-    private Bootstrap bootstrap;
-    private Channel channel;
+    private static User user;
+    private static String nettyPort = "80";
+    private static NioEventLoopGroup group;
+    private static Bootstrap bootstrap;
+    private static Channel channel;
 
-    public NettyClient(User user, String nettyPort) {
-        this.user = user;
-        this.nettyPort = nettyPort;
+    public static void setUser(User user) {
+        NettyClient.user = user;
     }
 
-    public NettyClient(User user) {
-        this.user = user;
-        this.nettyPort = "80";
+    public static void setNettyPort(String nettyPort) {
+        NettyClient.nettyPort = nettyPort;
     }
 
-    public void start() throws URISyntaxException {
+    public static void start() throws URISyntaxException {
         log.info("===>NettyClient start......");
         group = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
@@ -100,11 +99,11 @@ public class NettyClient {
         }
     }
 
-    public void stop() {
+    public static void stop() {
         group.shutdownGracefully();
     }
 
-    public void scannerInChat() throws URISyntaxException, InterruptedException {
+    public static void scannerInChat() throws URISyntaxException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String line = scanner.nextLine();
@@ -133,7 +132,7 @@ public class NettyClient {
         }
     }
 
-    public void scannerInGroupChat() throws URISyntaxException, InterruptedException {
+    public static void scannerInGroupChat() throws URISyntaxException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String line = scanner.nextLine();
@@ -162,7 +161,7 @@ public class NettyClient {
         }
     }
 
-    public void send(MsgType msgType, String to, String content) throws InterruptedException {
+    public static void send(MsgType msgType, String to, String content) throws InterruptedException {
         switch (msgType) {
             case CHAT:
                 sendChat(to, content);
@@ -184,7 +183,7 @@ public class NettyClient {
         }
     }
 
-    private void sendChat(String toId, String content) throws InterruptedException {
+    private static void sendChat(String toId, String content) throws InterruptedException {
         Header header = Header.newBuilder()
                 .setMagic(Const.MAGIC)
                 .setVersion(0)
@@ -224,7 +223,7 @@ public class NettyClient {
         });
     }
 
-    private void sendGroupChat(long groupId, String content) throws InterruptedException {
+    private static void sendGroupChat(long groupId, String content) throws InterruptedException {
         Header header = Header.newBuilder()
                 .setMagic(Const.MAGIC)
                 .setVersion(0)

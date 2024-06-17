@@ -141,10 +141,11 @@ public class GroupChatClientMain {
 
 
         UserClient.login(user);
-        NettyClient nettyClient = new NettyClient(user, port);
-        nettyClient.start();
+        NettyClient.setUser(user);
+        NettyClient.setNettyPort(port);
+        NettyClient.start();
         log.info("===========>本次测试的群组ID为：{}", group.getGroupId());
-        nettyClient.scannerInGroupChat();
+        NettyClient.scannerInGroupChat();
     }
 
 

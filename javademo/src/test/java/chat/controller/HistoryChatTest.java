@@ -42,10 +42,10 @@ public class HistoryChatTest {
 
         long startTime = new Date().getTime();
         ChatClient chatClient = new ChatClient(user01, user02);
-        NettyClient nettyClient = new NettyClient(user01);
-        nettyClient.start();
+        NettyClient.setUser(user01);
+        NettyClient.start();
         String content = UUID.randomUUID().toString();
-        nettyClient.send(MsgType.CHAT, user02.getAccount(), content);
+        NettyClient.send(MsgType.CHAT, user02.getAccount(), content);
         long endTime = startTime+ 60000;
         long lastMsgId = -1;
 
@@ -60,7 +60,7 @@ public class HistoryChatTest {
                 String s = msgJson.getString("content");
                 if (content.equals(s)) {
                     assertTrue(true);
-                    nettyClient.stop();
+                    NettyClient.stop();
                     return;
                 }
             }
@@ -71,7 +71,7 @@ public class HistoryChatTest {
             }
         }
 
-        nettyClient.stop();
+        NettyClient.stop();
         assertTrue(false);
     }
 
@@ -85,13 +85,13 @@ public class HistoryChatTest {
 
         long startTime = new Date().getTime();
         ChatClient chatClient = new ChatClient(user01, user02);
-        NettyClient nettyClient = new NettyClient(user01);
-        nettyClient.start();
+        NettyClient.setUser(user01);
+        NettyClient.start();
         String content = UUID.randomUUID().toString();
         int sendCnt = 20;
         int i = 0;
         while (i < sendCnt) {
-            nettyClient.send(MsgType.CHAT, user02.getAccount(), content);
+            NettyClient.send(MsgType.CHAT, user02.getAccount(), content);
             i++;
         }
         long endTime = startTime+ 60000;
@@ -118,7 +118,7 @@ public class HistoryChatTest {
             }
         }
 
-        nettyClient.stop();
+        NettyClient.stop();
         assertTrue(cnt == sendCnt);
     }
 }

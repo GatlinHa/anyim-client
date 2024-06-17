@@ -53,9 +53,10 @@ public class ChatClientMain {
             UserClient.register(user);
         }
         UserClient.login(user);
-        NettyClient nettyClient = new NettyClient(user, args[1]);
-        nettyClient.start();
-        nettyClient.scannerInChat();
+        NettyClient.setUser(user);
+        NettyClient.setNettyPort(args[1]);
+        NettyClient.start();
+        NettyClient.scannerInChat();
     }
 
 }

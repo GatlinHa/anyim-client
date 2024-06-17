@@ -50,10 +50,10 @@ public class PullChatMsgTest {
 
         long lastPullTime = new Date().getTime();
         ChatClient chatClient = new ChatClient(user01, user02);
-        NettyClient nettyClient = new NettyClient(user01);
-        nettyClient.start();
+        NettyClient.setUser(user01);
+        NettyClient.start();
         String content = UUID.randomUUID().toString();
-        nettyClient.send(MsgType.CHAT, user02.getAccount(), content);
+        NettyClient.send(MsgType.CHAT, user02.getAccount(), content);
         long lastMsgId = -1;
 
         while (true) {
@@ -67,7 +67,7 @@ public class PullChatMsgTest {
                 String s = msgJson.getString("content");
                 if (content.equals(s)) {
                     assertTrue(true);
-                    nettyClient.stop();
+                    NettyClient.stop();
                     return;
                 }
             }
@@ -78,7 +78,7 @@ public class PullChatMsgTest {
             }
         }
 
-        nettyClient.stop();
+        NettyClient.stop();
         assertTrue(false);
     }
 
@@ -93,10 +93,10 @@ public class PullChatMsgTest {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long lastPullTime = sdf.parse("2024-06-01 00:00:00").getTime();
         ChatClient chatClient = new ChatClient(user01, user02);
-        NettyClient nettyClient = new NettyClient(user01);
-        nettyClient.start();
+        NettyClient.setUser(user01);
+        NettyClient.start();
         String content = UUID.randomUUID().toString();
-        nettyClient.send(MsgType.CHAT, user02.getAccount(), content);
+        NettyClient.send(MsgType.CHAT, user02.getAccount(), content);
         long lastMsgId = -1;
 
         while (true) {
@@ -110,7 +110,7 @@ public class PullChatMsgTest {
                 String s = msgJson.getString("content");
                 if (content.equals(s)) {
                     assertTrue(true);
-                    nettyClient.stop();
+                    NettyClient.stop();
                     return;
                 }
             }
@@ -121,7 +121,7 @@ public class PullChatMsgTest {
             }
         }
 
-        nettyClient.stop();
+        NettyClient.stop();
         assertTrue(false);
     }
 
@@ -135,13 +135,13 @@ public class PullChatMsgTest {
 
         long lastPullTime = new Date().getTime();
         ChatClient chatClient = new ChatClient(user01, user02);
-        NettyClient nettyClient = new NettyClient(user01);
-        nettyClient.start();
+        NettyClient.setUser(user01);
+        NettyClient.start();
         String content = UUID.randomUUID().toString();
         int sendCnt = 10;
         int i = 0;
         while (i < sendCnt) {
-            nettyClient.send(MsgType.CHAT, user02.getAccount(), content);
+            NettyClient.send(MsgType.CHAT, user02.getAccount(), content);
             i++;
         }
         long lastMsgId = -1;
@@ -167,7 +167,7 @@ public class PullChatMsgTest {
             }
         }
 
-        nettyClient.stop();
+        NettyClient.stop();
         assertTrue(cnt == sendCnt);
     }
 }
