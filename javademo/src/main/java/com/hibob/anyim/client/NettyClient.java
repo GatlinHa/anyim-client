@@ -92,10 +92,17 @@ public class NettyClient {
                     });
             ChannelFuture channelFuture = bootstrap.connect(uri.getHost(), uri.getPort()).sync();
             channel = channelFuture.channel();
+            startDaemon();
         }
         catch (Exception e) {
             log.error(e.getMessage());
         }
+    }
+
+    public static void reconnect() throws URISyntaxException, InterruptedException {
+        URI uri = new URI("ws://localhost:" + nettyPort + "/ws");
+        ChannelFuture channelFuture = bootstrap.connect(uri.getHost(), uri.getPort()).sync();
+        channel = channelFuture.channel();
     }
 
     public static void stop() {
@@ -180,6 +187,32 @@ public class NettyClient {
             default:
                 break;
         }
+    }
+
+    private static void startDaemon() {
+        new Thread(() -> {
+            while (true) {
+                if (channel.isActive()) {
+                    log.info("Netty服务检测正常！");
+                }
+                else {
+                    try {
+                        log.info("Netty服务检测异常，尝试重连！");
+                        reconnect();
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
     }
 
     private static void sendChat(String toId, String content) throws InterruptedException {
