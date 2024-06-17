@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -94,6 +95,98 @@ public class GroupMngClient {
         HttpHeaders headers = getHttpHeaders(user.getAccessToken(), user.getAccessSecret());
         Map<String, Object> map = new HashMap<>();
         map.put("groupId", groupId);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(
+                    new URI(url),
+                    HttpMethod.POST,
+                    request,
+                    String.class);
+        }
+        catch (HttpClientErrorException.Unauthorized e) {
+            response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return response;
+        }
+        return response;
+    }
+
+    public static ResponseEntity<String> modifyGroup(Group group, String groupName, String announcement, String avatar) throws Exception {
+        String url = "http://localhost:80/groupmng/modifyGroup";
+        HttpHeaders headers = getHttpHeaders(group.getUserLocal().getAccessToken(), group.getUserLocal().getAccessSecret());
+        Map<String, Object> map = new HashMap<>();
+        map.put("groupId", group.getGroupId());
+        map.put("groupName", groupName);
+        map.put("announcement", announcement);
+        map.put("avatar", avatar);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(
+                    new URI(url),
+                    HttpMethod.POST,
+                    request,
+                    String.class);
+        }
+        catch (HttpClientErrorException.Unauthorized e) {
+            response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return response;
+        }
+        return response;
+    }
+
+    public static ResponseEntity<String> changeMembers(Group group, List<Map<String, Object>> addMembers, List<Map<String, Object>> delMembers) throws Exception {
+        String url = "http://localhost:80/groupmng/changeMembers";
+        HttpHeaders headers = getHttpHeaders(group.getUserLocal().getAccessToken(), group.getUserLocal().getAccessSecret());
+        Map<String, Object> map = new HashMap<>();
+        map.put("groupId", group.getGroupId());
+        map.put("addMembers", addMembers);
+        map.put("delMembers", delMembers);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(
+                    new URI(url),
+                    HttpMethod.POST,
+                    request,
+                    String.class);
+        }
+        catch (HttpClientErrorException.Unauthorized e) {
+            response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return response;
+        }
+        return response;
+    }
+
+    public static ResponseEntity<String> changeRole(Group group, String memberAccount, int memberRole) throws Exception {
+        String url = "http://localhost:80/groupmng/changeRole";
+        HttpHeaders headers = getHttpHeaders(group.getUserLocal().getAccessToken(), group.getUserLocal().getAccessSecret());
+        Map<String, Object> map = new HashMap<>();
+        map.put("groupId", group.getGroupId());
+        map.put("memberAccount", memberAccount);
+        map.put("memberRole", memberRole);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<String> response;
+        try {
+            response = restTemplate.exchange(
+                    new URI(url),
+                    HttpMethod.POST,
+                    request,
+                    String.class);
+        }
+        catch (HttpClientErrorException.Unauthorized e) {
+            response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return response;
+        }
+        return response;
+    }
+
+    public static ResponseEntity<String> ownerTransfer(Group group, User owner, User newOwner) throws Exception {
+        String url = "http://localhost:80/groupmng/ownerTransfer";
+        HttpHeaders headers = getHttpHeaders(owner.getAccessToken(), owner.getAccessSecret());
+        Map<String, Object> map = new HashMap<>();
+        map.put("groupId", group.getGroupId());
+        map.put("account", newOwner.getAccount());
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(map, headers);
         ResponseEntity<String> response;
         try {
