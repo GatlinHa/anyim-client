@@ -1,6 +1,7 @@
 package com.hibob.anyim.client;
 
 import com.hibob.anyim.consts.Const;
+import com.hibob.anyim.entity.Group;
 import com.hibob.anyim.entity.User;
 import com.hibob.anyim.handler.ByteBufToWebSocketFrame;
 import com.hibob.anyim.handler.ClientHandler;
@@ -103,7 +104,7 @@ public class NettyClient {
         group.shutdownGracefully();
     }
 
-    public void scannerIn() throws URISyntaxException, InterruptedException {
+    public void scannerInChat() throws URISyntaxException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String line = scanner.nextLine();
@@ -132,10 +133,42 @@ public class NettyClient {
         }
     }
 
-    public void send(MsgType msgType, String toId, String content) throws InterruptedException {
+    public void scannerInGroupChat() throws URISyntaxException, InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String line = scanner.nextLine();
+            if ("exit".equals(line)) {
+                log.info("===>会话结束");
+                stop();
+                break;
+            }
+
+            // 根据line中"[user01]"符号，解析出要发送的对方账号user01
+            String to = "";
+            String content = "";
+            try {
+                to = line.substring(line.indexOf("@") + 1, line.indexOf(" "));
+                content = line.substring(line.indexOf(" ") + 1);
+
+            }
+            catch (Exception e) {
+                log.info("===>输入非法");
+            }
+
+            if (!channel.isActive()) {
+                start();
+            }
+            sendGroupChat(Long.parseLong(to), content);
+        }
+    }
+
+    public void send(MsgType msgType, String to, String content) throws InterruptedException {
         switch (msgType) {
             case CHAT:
-                sendChat(toId, content);
+                sendChat(to, content);
+                break;
+            case GROUP_CHAT:
+                sendGroupChat(Long.parseLong(to), content);
                 break;
             case READ:
 //                sendRead(toId, content);
@@ -191,5 +224,44 @@ public class NettyClient {
         });
     }
 
+    private void sendGroupChat(long groupId, String content) throws InterruptedException {
+        Header header = Header.newBuilder()
+                .setMagic(Const.MAGIC)
+                .setVersion(0)
+                .setMsgType(MsgType.GROUP_CHAT)
+                .setIsExtension(false)
+                .build();
+        Body body = Body.newBuilder()
+                .setFromId(user.getAccount())
+                .setFromClient(user.getClientId())
+                .setGroupId(groupId)
+                .setSeq(1)
+                .setAck(1)
+                .setContent(content)
+                .setTempMsgId(UUID.randomUUID().toString())
+                .build();
+        Msg msg = Msg.newBuilder().setHeader(header).setBody(body).build();
+
+        // 等待握手成功
+        int timeOutCnt = 30;
+        while (timeOutCnt > 0) {
+            Object hello = channel.attr(AttributeKey.valueOf("hello")).get();
+            if (hello == null) {
+                Thread.sleep(100);
+                timeOutCnt--;
+                continue;
+            }
+            log.info("===握手成功，开始发送消息");
+            break;
+        }
+        channel.writeAndFlush(msg).addListener(future -> {
+            if (future.isSuccess()) {
+                log.info("===>发送成功：发给[{}]的消息：{}", groupId, content);
+            }
+            else {
+                log.info("===>发送失败：发给[{}]的消息：{}，失败原因：{}", groupId, content, future.cause().getMessage());
+            }
+        });
+    }
 
 }

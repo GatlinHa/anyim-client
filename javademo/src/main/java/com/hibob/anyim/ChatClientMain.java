@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class ClientMain {
+public class ChatClientMain {
     private static final Map<String, User> startupCmdMap = new HashMap<>();
 
     private static String token ="";
@@ -55,7 +55,7 @@ public class ClientMain {
         UserClient.login(user);
         NettyClient nettyClient = new NettyClient(user, args[1]);
         nettyClient.start();
-        nettyClient.scannerIn();
+        nettyClient.scannerInChat();
     }
 
 }

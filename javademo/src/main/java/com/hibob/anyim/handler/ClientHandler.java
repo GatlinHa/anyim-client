@@ -49,6 +49,16 @@ public class ClientHandler extends SimpleChannelInboundHandler<Msg> {
             Msg msgRead = Msg.newBuilder().setHeader(header).setBody(body).build();
             ctx.channel().writeAndFlush(msgRead);
         }
+        else if (msg.getHeader().getMsgType() == MsgType.GROUP_CHAT) {
+            // 这里是只做收到的消息展示
+            String fromId = msg.getBody().getFromId();
+            String fromClient = msg.getBody().getFromClient();
+            String content = msg.getBody().getContent();
+            long groupId = msg.getBody().getGroupId();
+            long msgId = msg.getBody().getMsgId();
+            log.info("<<===收到【{}】发过来的的GROUP_CHAT消息：{}，群id是：{}，msgId是：{}", fromId + "@" + fromClient, content, groupId, msgId);
+            // 暂不发已读消息
+        }
         else if (msg.getHeader().getMsgType() == MsgType.READ) {
             String fromId = msg.getBody().getFromId();
             String fromClient = msg.getBody().getFromClient();

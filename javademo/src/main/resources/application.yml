@@ -1,8 +1,2 @@
-server:
-#  port:
-
-spring:
-  application:
-    name: client
 
 
