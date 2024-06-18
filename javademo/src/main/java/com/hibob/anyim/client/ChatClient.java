@@ -24,7 +24,7 @@ public class ChatClient {
         UserClient.login(userLocal);
         String url = "http://localhost:80/chat/pullMsg";
         HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(baseRequestMap());
         map.put("toAccount", userPeer.getAccount());
         map.put("lastMsgId", lastMsgId);
         map.put("lastPullTime", lastPullTime);
@@ -43,7 +43,7 @@ public class ChatClient {
         UserClient.login(userLocal);
         String url = "http://localhost:80/chat/history";
         HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(baseRequestMap());
         map.put("toAccount", userPeer.getAccount());
         map.put("startTime", startTime);
         map.put("endTime", endTime);
@@ -70,6 +70,14 @@ public class ChatClient {
         headers.add("sign", sign);
         headers.add("accessToken", token);
         return headers;
+    }
+
+    private static Map<String, Object> baseRequestMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("clientType", 2);
+        map.put("clientName", "chrome浏览器");
+        map.put("clientVersion", "1.0.0.beta");
+        return map;
     }
 
 }

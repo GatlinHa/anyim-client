@@ -211,9 +211,9 @@ public class PullGroupChatMsgTest {
     @AfterClass
     public static void afterTest() throws Exception {
         GroupMngClient.delGroup(user01, group.getGroupId());
-        UserClient.register(user01);
-        UserClient.register(user02);
-        UserClient.register(user03);
-        UserClient.register(user04);
+        UserClient.deregister(user01);
+        UserClient.deregister(user02);
+        UserClient.deregister(user03);
+        UserClient.deregister(user04);
     }
 }

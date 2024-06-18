@@ -25,7 +25,7 @@ public class GroupChatClient {
         UserClient.login(userLocal);
         String url = "http://localhost:80/groupChat/pullMsg";
         HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(baseRequestMap());
         map.put("groupId", group.getGroupId());
         map.put("groupId", group.getGroupId());
         map.put("lastMsgId", lastMsgId);
@@ -45,7 +45,7 @@ public class GroupChatClient {
         UserClient.login(userLocal);
         String url = "http://localhost:80/groupChat/history";
         HttpHeaders headers = getHttpHeaders(userLocal.getAccessToken(), userLocal.getAccessSecret());
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(baseRequestMap());
         map.put("groupId", group.getGroupId());
         map.put("startTime", startTime);
         map.put("endTime", endTime);
@@ -71,6 +71,14 @@ public class GroupChatClient {
         headers.add("sign", sign);
         headers.add("accessToken", token);
         return headers;
+    }
+
+    private static Map<String, Object> baseRequestMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("clientType", 2);
+        map.put("clientName", "chrome浏览器");
+        map.put("clientVersion", "1.0.0.beta");
+        return map;
     }
 
 }
