@@ -1,5 +1,6 @@
 package com.hibob.anyim.client;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.entity.Group;
 import com.hibob.anyim.entity.User;
 import com.hibob.anyim.utils.JwtUtil;
@@ -45,6 +46,10 @@ public class GroupMngClient {
         catch (HttpClientErrorException.Unauthorized e) {
             response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             return response;
+        }
+        if (Integer.valueOf(JSONObject.parseObject(response.getBody()).getString("code")) == 0) {
+            Long groupId = JSONObject.parseObject(response.getBody()).getJSONObject("data").getJSONObject("groupInfo").getLong("groupId");
+            group.setGroupId(groupId);
         }
         return response;
     }
