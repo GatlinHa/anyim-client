@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.GroupMngClient;
 import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.consts.Groups;
 import com.hibob.anyim.consts.Users;
 import com.hibob.anyim.entity.Group;
 import com.hibob.anyim.entity.User;
@@ -21,32 +22,9 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class QueryGroupListTest {
 
-    private static Group group01 = new Group(
-            null,
-            0,
-            "test_group_01",
-            "暂无公告",
-            "test_avatar_01",
-            new ArrayList<>()
-    );
-
-    private static Group group02 = new Group(
-            null,
-            0,
-            "test_group_02",
-            "暂无公告",
-            "test_avatar_02",
-            new ArrayList<>()
-    );
-
-    private static Group group03 = new Group(
-            null,
-            0,
-            "test_group_03",
-            "暂无公告",
-            "test_avatar_03",
-            new ArrayList<>()
-    );
+    private static Group group01 = Groups.GROUP_1;
+    private static Group group02 = Groups.GROUP_2;
+    private static Group group03 = Groups.GROUP_3;
 
     private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
     private static User user02 = Users.ACCOUNT_02_CLIENTID_01;
@@ -73,6 +51,10 @@ public class QueryGroupListTest {
         }
         UserClient.login(user01);
         UserClient.login(user05);
+
+        group01.getMembers().clear();
+        group02.getMembers().clear();
+        group03.getMembers().clear();
     }
 
     private static void addMember(Group group, User user, int role) {

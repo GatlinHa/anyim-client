@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.GroupMngClient;
 import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.consts.Groups;
 import com.hibob.anyim.consts.Users;
 import com.hibob.anyim.entity.Group;
 import com.hibob.anyim.entity.User;
@@ -23,14 +24,7 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class QueryGroupInfoTest {
 
-    private static Group group01 = new Group(
-            null,
-            0,
-            "test_group_01",
-            "暂无公告",
-            "test_avatar_01",
-            null
-    );
+    private static Group group01 = Groups.GROUP_1;
 
     private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
     private static User user02 = Users.ACCOUNT_02_CLIENTID_01;
