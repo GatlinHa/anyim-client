@@ -23,6 +23,7 @@ public class HistoryGroupChatTest {
     private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
     private static User user02 = Users.ACCOUNT_02_CLIENTID_01;
     private static User user03 = Users.ACCOUNT_03_CLIENTID_01;
+    private static User user04 = Users.ACCOUNT_04_CLIENTID_01; // 这个用户不在群组中
 
     private static Group group = Groups.GROUP_1;
 
@@ -37,10 +38,14 @@ public class HistoryGroupChatTest {
         if (!UserClient.validateAccount(user03)) {
             UserClient.register(user03);
         }
+        if (!UserClient.validateAccount(user04)) {
+            UserClient.register(user04);
+        }
 
         UserClient.login(user01);
         UserClient.login(user02);
         UserClient.login(user03);
+        UserClient.login(user04);
 
         List<Map<String, Object>> members = new ArrayList<>();
         members.add(new HashMap<String, Object>(){{
@@ -144,5 +149,19 @@ public class HistoryGroupChatTest {
 
         NettyClient.stop();
         assertTrue(cnt == sendCnt);
+    }
+
+    /**
+     * 用不在群组的user04查看消息，应该查询失败
+     * @throws Exception
+     */
+    @Test
+    public void test03() throws Exception {
+        log.info("===>正在执行Test，Class: [{}]，Method: [{}]", this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+        long startTime = new Date().getTime();
+        long endTime = startTime+ 60000;
+        long lastMsgId = -1;
+        ResponseEntity<String> response = GroupChatClient.history(user04, group, startTime, endTime, lastMsgId, 10);
+        assertTrue(JSONObject.parseObject(response.getBody()).getInteger("code") == 502);
     }
 }

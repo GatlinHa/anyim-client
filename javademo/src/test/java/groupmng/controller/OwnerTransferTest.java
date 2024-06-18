@@ -70,11 +70,11 @@ public class OwnerTransferTest {
         // user02不是群主，转让失败
         UserClient.login(user02);
         response = GroupMngClient.ownerTransfer(group01, user02, user03);
-        assertTrue(JSONObject.parseObject(response.getBody()).getInteger("code") == 506);
+        assertTrue(JSONObject.parseObject(response.getBody()).getInteger("code") == 505);
 
         // user04不在此群，转让失败
         response = GroupMngClient.ownerTransfer(group01, user01, user04);
-        assertTrue(JSONObject.parseObject(response.getBody()).getInteger("code") == 507);
+        assertTrue(JSONObject.parseObject(response.getBody()).getInteger("code") == 506);
 
         // user01转让给user02，转让成功
         response = GroupMngClient.ownerTransfer(group01, user01, user02);

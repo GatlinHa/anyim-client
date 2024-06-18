@@ -81,7 +81,7 @@ public class ChangeRoleTest {
 
         // user04不在该群，应该返回错误
         response = GroupMngClient.changeRole(group01, user04.getAccount(), 1);
-        assertTrue(JSONObject.parseObject(response.getBody()).getInteger("code") == 505);
+        assertTrue(JSONObject.parseObject(response.getBody()).getInteger("code") == 502);
     }
 
     @After
