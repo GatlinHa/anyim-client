@@ -9,8 +9,7 @@ import com.hibob.anyim.entity.Group;
 import com.hibob.anyim.entity.User;
 import com.hibob.anyim.netty.protobuf.MsgType;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.springframework.http.ResponseEntity;
 
 import java.text.SimpleDateFormat;
@@ -28,8 +27,8 @@ public class PullGroupChatMsgTest {
 
     private static Group group = Groups.GROUP_1;
 
-    @Before
-    public void beforeTest() throws Exception {
+    @BeforeClass //只用执行一次
+    public static void beforeTest() throws Exception {
         if (!UserClient.validateAccount(user01)) {
             UserClient.register(user01);
         }
@@ -207,5 +206,14 @@ public class PullGroupChatMsgTest {
         long lastMsgId = -1;
         ResponseEntity<String> response = GroupChatClient.pullMsg(user04, group, lastMsgId, lastPullTime, 10);
         assertTrue(JSONObject.parseObject(response.getBody()).getInteger("code") == 502);
+    }
+
+    @AfterClass
+    public static void afterTest() throws Exception {
+        GroupMngClient.delGroup(user01, group.getGroupId());
+        UserClient.register(user01);
+        UserClient.register(user02);
+        UserClient.register(user03);
+        UserClient.register(user04);
     }
 }

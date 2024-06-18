@@ -9,7 +9,8 @@ import com.hibob.anyim.consts.Users;
 import com.hibob.anyim.entity.User;
 import com.hibob.anyim.netty.protobuf.MsgType;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
@@ -24,8 +25,8 @@ public class HistoryChatTest {
     private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
     private static User user02 = Users.ACCOUNT_02_CLIENTID_01;
 
-    @Before
-    public void beforeTest() throws Exception {
+    @BeforeClass //只用执行一次
+    public static void beforeTest() throws Exception {
         if (!UserClient.validateAccount(user01)) {
             UserClient.register(user01);
         }
@@ -34,6 +35,7 @@ public class HistoryChatTest {
         if (!UserClient.validateAccount(user02)) {
             UserClient.register(user02);
         }
+        UserClient.login(user02);
     }
 
     @Test
@@ -120,5 +122,11 @@ public class HistoryChatTest {
 
         NettyClient.stop();
         assertTrue(cnt == sendCnt);
+    }
+
+    @AfterClass //只用执行一次
+    public static void afterTest() throws Exception {
+        UserClient.deregister(user01);
+        UserClient.deregister(user02);
     }
 }
