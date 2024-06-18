@@ -2,6 +2,7 @@ package user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.consts.Users;
 import com.hibob.anyim.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
@@ -9,42 +10,26 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
+import java.util.UUID;
+
 import static org.junit.Assert.assertTrue;
 
 @Slf4j
 
 public class FindByNickTest {
 
-    private static User user01 = new User(
-            "account_test01",
-            "clientId_test01",
-            "avatar_test01",
-            "inviteCode_test01",
-            "nickName_test01",
-            "password_test01",
-            "phoneNum_test01"
-    );
-    private static User user02 = new User(
-            "account_test02",
-            "clientId_test02",
-            "avatar_test02",
-            "inviteCode_test02",
-            "nickName_test02",
-            "password_test02",
-            "phoneNum_test02"
-    );
-    private static User user03 = new User(
-            "account_test03",
-            "clientId_test03",
-            "avatar_test03",
-            "inviteCode_test03",
-            "nickName_test03",
-            "password_test03",
-            "phoneNum_test03"
-    );
+    private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
+    private static User user02 = Users.ACCOUNT_02_CLIENTID_01;
+    private static User user03 = Users.ACCOUNT_03_CLIENTID_01;
+
+    private static String nickNamePre = UUID.randomUUID().toString();
 
     @Before
     public void beforeTest() throws Exception {
+        user01.setNickName(nickNamePre + "_01");
+        user02.setNickName(nickNamePre + "_02");
+        user03.setNickName(nickNamePre + "_03");
+
         if (UserClient.validateAccount(user01)) {
             UserClient.login(user01);
             UserClient.deregister(user01);
@@ -73,15 +58,15 @@ public class FindByNickTest {
         // 2.user01登录
         ResponseEntity<String> response2 = UserClient.login(user01);
         // 3.查询（nick_name）
-        ResponseEntity<String> response3 = UserClient.findByNick(user01, "test0");
+        ResponseEntity<String> response3 = UserClient.findByNick(user01, nickNamePre);
         // 4.注册user02
         ResponseEntity<String> response4 = UserClient.register(user02);
         // 5.查询（nick_name）
-        ResponseEntity<String> response5 = UserClient.findByNick(user01, "test0");
+        ResponseEntity<String> response5 = UserClient.findByNick(user01, nickNamePre);
         // 6.注册user03
         ResponseEntity<String> response6 = UserClient.register(user03);
         // 7.查询（nick_name）
-        ResponseEntity<String> response7 = UserClient.findByNick(user01, "test0");
+        ResponseEntity<String> response7 = UserClient.findByNick(user01, nickNamePre);
 
         assertTrue(JSONObject.parseObject(response3.getBody()).getJSONArray("data").size() == 1);
         assertTrue(JSONObject.parseObject(response5.getBody()).getJSONArray("data").size() == 2);

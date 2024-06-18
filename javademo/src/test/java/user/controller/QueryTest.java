@@ -2,6 +2,7 @@ package user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.consts.Users;
 import com.hibob.anyim.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
@@ -14,25 +15,9 @@ import static org.junit.Assert.assertTrue;
 
 @Slf4j
 public class QueryTest {
-    private static User user01 = new User(
-            "account_test01",
-            "clientId_test01",
-            "avatar_test01",
-            "inviteCode_test01",
-            "nickName_test01",
-            "password_test01",
-            "phoneNum_test01"
-    );
+    private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
 
-    private static User user02 = new User(
-            "account_test02",
-            "clientId_test02",
-            "avatar_test02",
-            "inviteCode_test02",
-            "nickName_test02",
-            "password_test02",
-            "phoneNum_test02"
-    );
+    private static User user02 = Users.ACCOUNT_02_CLIENTID_01;
 
     @Before
     public void beforeTest() throws Exception {

@@ -1,6 +1,7 @@
 package user.controller;
 
 import com.hibob.anyim.client.UserClient;
+import com.hibob.anyim.consts.Users;
 import com.hibob.anyim.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
@@ -12,15 +13,7 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class ValidateAccountTest {
 
-    private static User user01 = new User(
-            "account_test01",
-            "clientId_test01",
-            "avatar_test01",
-            "inviteCode_test01",
-            "nickName_test01",
-            "password_test01",
-            "phoneNum_test01"
-    );
+    private static User user01 = Users.ACCOUNT_01_CLIENTID_01;
 
     @Before
     public void beforeTest() throws Exception {
