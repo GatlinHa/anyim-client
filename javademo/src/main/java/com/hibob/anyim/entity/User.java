@@ -2,6 +2,8 @@ package com.hibob.anyim.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class User {
 
@@ -20,6 +22,8 @@ public class User {
     private String sex;
     private String level;
     private String signature;
+    private String email;
+    private Date birthday;
 
     public User(
             String account,
@@ -28,7 +32,9 @@ public class User {
             String inviteCode,
             String nickName,
             String password,
-            String phoneNum
+            String phoneNum,
+            String email,
+            Date birthday
     ) {
         this.account = account;
         this.clientId = clientId;
@@ -37,6 +43,8 @@ public class User {
         this.nickName = nickName;
         this.password = password;
         this.phoneNum = phoneNum;
+        this.email = email;
+        this.birthday = birthday;
     }
 
     public User(User user) {
@@ -55,5 +63,7 @@ public class User {
         this.sex = user.sex;
         this.level = user.level;
         this.signature = user.signature;
+        this.email = user.email;
+        this.birthday = user.birthday;
     }
 }
