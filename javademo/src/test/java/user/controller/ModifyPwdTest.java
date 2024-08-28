@@ -31,7 +31,7 @@ public class ModifyPwdTest {
     }
 
     /**
-     * 注册 -> 登录 -> 修改密码失败 -> 修改密码成功 -> 无法使用查询 -> 使用旧密码登录 -> 使用新密码登录 -> 可以使用查询
+     * 注册 -> 登录 -> 修改密码失败（密码错误） -> 修改密码失败（新密码与旧密码一致） -> 修改密码成功 -> 登出 -> 使用旧密码登录 -> 使用新密码登录 -> 可以使用查询
      * @throws Exception
      */
     @Test
@@ -40,16 +40,17 @@ public class ModifyPwdTest {
 
         ResponseEntity<String> response1 = UserClient.register(user01);
         ResponseEntity<String> response2 = UserClient.login(user01);
-        ResponseEntity<String> response3 = UserClient.modifyPwd(user01, user01_errorPwd.getPassword(), user01_newPwd.getPassword());
+        ResponseEntity<String> response3_1 = UserClient.modifyPwd(user01, user01_errorPwd.getPassword(), user01_newPwd.getPassword());
+        ResponseEntity<String> response3_2 = UserClient.modifyPwd(user01, user01.getPassword(), user01.getPassword());
         ResponseEntity<String> response4 = UserClient.modifyPwd(user01, user01.getPassword(), user01_newPwd.getPassword());
-        ResponseEntity<String> response5 = UserClient.querySelf(user01);
+        ResponseEntity<String> response5 = UserClient.logout(user01);
         ResponseEntity<String> response6 = UserClient.login(user01);
         ResponseEntity<String> response7 = UserClient.login(user01_newPwd);
         ResponseEntity<String> response8 = UserClient.querySelf(user01_newPwd);
 
-        assertTrue(response3.getStatusCode() == HttpStatus.UNAUTHORIZED);
+        assertTrue(response3_1.getStatusCode() == HttpStatus.UNAUTHORIZED);
+        assertTrue(response3_2.getStatusCode() == HttpStatus.UNAUTHORIZED);
         assertTrue(Integer.valueOf(JSONObject.parseObject(response4.getBody()).getString("code")) == 0);
-        assertTrue(response5.getStatusCode() == HttpStatus.UNAUTHORIZED);
         assertTrue(response6.getStatusCode() == HttpStatus.UNAUTHORIZED);
         assertTrue(Integer.valueOf(JSONObject.parseObject(response7.getBody()).getString("code")) == 0);
         assertTrue(JSONObject.parseObject(response8.getBody()).getJSONObject("data").getString("nickName").equals(user01.getNickName()));
