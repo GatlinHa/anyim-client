@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.UserClient;
 import com.hibob.anyim.consts.Users;
 import com.hibob.anyim.entity.User;
+import com.hibob.anyim.enums.ServiceErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -42,8 +43,8 @@ public class LoginTest {
         ResponseEntity<String> response4 = UserClient.login(user01);
         ResponseEntity<String> response5 = UserClient.login(user01);
 
-        assertTrue(response1.getStatusCode() == HttpStatus.UNAUTHORIZED);
-        assertTrue(response3.getStatusCode() == HttpStatus.UNAUTHORIZED);
+        assertTrue(JSONObject.parseObject(response1.getBody()).getInteger("code") == ServiceErrorCode.ERROR_LOGIN.code());
+        assertTrue(JSONObject.parseObject(response3.getBody()).getInteger("code") == ServiceErrorCode.ERROR_LOGIN.code());
         assertTrue(Integer.valueOf(JSONObject.parseObject(response4.getBody()).getString("code")) == 0);
         assertTrue(Integer.valueOf(JSONObject.parseObject(response5.getBody()).getString("code")) == 0);
     }

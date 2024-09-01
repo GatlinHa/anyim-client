@@ -19,6 +19,21 @@ public class Const {
      */
     public static final int SERVICE_CODE_NETTY = 300;
 
+    /**
+     * 服务编码：anyim-chat服务
+     */
+    public static final int SERVICE_CODE_CHAT = 400;
+
+    /**
+     * 服务编码：anyim-groupmng服务
+     */
+    public static final int SERVICE_CODE_GROUP_MNG = 500;
+
+    /**
+     * 服务编码：default占位
+     */
+    public static final int SERVICE_CODE_DEFAULT = 5000;
+
 
     /**
      * 分隔符：@
@@ -55,5 +70,7 @@ public class Const {
      * 在线客户端缓存过期时间
      */
     public static final int CACHE_ONLINE_EXPIRE = 3600;
+
+    public static final int MSG_TTL_IN_MONGODB = 365 * 24 * 60 * 60;
 
 }

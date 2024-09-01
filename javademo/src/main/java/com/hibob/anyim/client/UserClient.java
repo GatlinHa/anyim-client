@@ -2,6 +2,7 @@ package com.hibob.anyim.client;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.entity.User;
+import com.hibob.anyim.enums.ServiceErrorCode;
 import com.hibob.anyim.utils.JwtUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -69,6 +70,10 @@ public class UserClient {
         }
 
         JSONObject jsonObject = JSONObject.parseObject(response.getBody());
+        if (jsonObject.getInteger("code") != 0) {
+            return response;
+        }
+
         String accessToken = jsonObject.getJSONObject("data").getJSONObject("accessToken").getString("token");
         String accessSecret = jsonObject.getJSONObject("data").getJSONObject("accessToken").getString("secret");
         String refreshToken = jsonObject.getJSONObject("data").getJSONObject("refreshToken").getString("token");
@@ -172,6 +177,11 @@ public class UserClient {
         }
         catch (HttpClientErrorException.Unauthorized e) {
             response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return response;
+        }
+
+        JSONObject jsonObject = JSONObject.parseObject(response.getBody());
+        if (jsonObject.getInteger("code") != 0) {
             return response;
         }
 

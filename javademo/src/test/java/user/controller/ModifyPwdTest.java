@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hibob.anyim.client.UserClient;
 import com.hibob.anyim.consts.Users;
 import com.hibob.anyim.entity.User;
+import com.hibob.anyim.enums.ServiceErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -48,10 +49,10 @@ public class ModifyPwdTest {
         ResponseEntity<String> response7 = UserClient.login(user01_newPwd);
         ResponseEntity<String> response8 = UserClient.querySelf(user01_newPwd);
 
-        assertTrue(response3_1.getStatusCode() == HttpStatus.UNAUTHORIZED);
-        assertTrue(response3_2.getStatusCode() == HttpStatus.UNAUTHORIZED);
+        assertTrue(JSONObject.parseObject(response3_1.getBody()).getInteger("code") == ServiceErrorCode.ERROR_OLD_PASSWORD_ERROR.code());
+        assertTrue(JSONObject.parseObject(response3_2.getBody()).getInteger("code") == ServiceErrorCode.ERROR_NEW_PASSWORD_EQUAL_OLD.code());
         assertTrue(Integer.valueOf(JSONObject.parseObject(response4.getBody()).getString("code")) == 0);
-        assertTrue(response6.getStatusCode() == HttpStatus.UNAUTHORIZED);
+        assertTrue(JSONObject.parseObject(response6.getBody()).getInteger("code") == ServiceErrorCode.ERROR_LOGIN.code());
         assertTrue(Integer.valueOf(JSONObject.parseObject(response7.getBody()).getString("code")) == 0);
         assertTrue(JSONObject.parseObject(response8.getBody()).getJSONObject("data").getString("nickName").equals(user01.getNickName()));
     }
