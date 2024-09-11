@@ -56,11 +56,8 @@ public class NettyClient {
         log.info("===>NettyClient start......");
         group = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
-        URI uri = new URI("ws://localhost:" + nettyPort + "/ws");
-        DefaultHttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaderNames.AUTHORIZATION, user.getAccessToken());
-        headers.add("account", user.getAccount());
-        headers.add("clientId", user.getClientId());
+        URI uri = new URI("ws://localhost:" + nettyPort + "/ws?token=" + user.getAccessToken());
+        log.error("======================> {}", uri);
         try {
             bootstrap
                     .group(group)
@@ -80,7 +77,7 @@ public class NettyClient {
                                             WebSocketVersion.V13,
                                             (String)null,
                                             false,
-                                            headers)));
+                                            null)));
                             pipeline.addLast(new WebSocketToByteBufEncoder()); //解码：WebSocketFrame -> ByteBuf
                             pipeline.addLast(new ProtobufVarint32FrameDecoder()); //解码：处理半包黏包，参数类型是ByteBuf
                             pipeline.addLast(new ProtobufDecoder(Msg.getDefaultInstance())); //解码：ByteBuf -> Msg
@@ -100,7 +97,7 @@ public class NettyClient {
     }
 
     public static void reconnect() throws URISyntaxException, InterruptedException {
-        URI uri = new URI("ws://localhost:" + nettyPort + "/ws");
+        URI uri = new URI("ws://localhost:" + nettyPort + "/ws?token=" + user.getAccessToken());
         ChannelFuture channelFuture = bootstrap.connect(uri.getHost(), uri.getPort()).sync();
         channel = channelFuture.channel();
     }
